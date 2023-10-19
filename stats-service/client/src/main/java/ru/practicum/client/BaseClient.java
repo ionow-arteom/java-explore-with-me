@@ -15,7 +15,7 @@ public class BaseClient {
         this.rest = rest;
     }
 
-    protected <T>ResponseEntity<Object> post(String path,T body) {
+    protected <T> ResponseEntity<Object> post(String path,T body) {
         return makeAndSendRequest(HttpMethod.POST,path, null, body);
     }
 
@@ -25,7 +25,7 @@ public class BaseClient {
 
     private <T> ResponseEntity<Object> makeAndSendRequest(HttpMethod method, String path,
                                                           @Nullable Map<String, Object> parameters, @Nullable T body) {
-        HttpEntity<T> requestEntity = new HttpEntity<>(body, defaultHeaders());
+        HttpEntity <T> requestEntity = new HttpEntity<>(body, defaultHeaders());
         ResponseEntity<Object> statsServiceResponse;
         try {
             if (parameters != null) {
