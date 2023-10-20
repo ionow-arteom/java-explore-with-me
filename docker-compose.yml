@@ -3,7 +3,6 @@ version: '3.1'
 services:
 
   stats-server:
-    restart: on-failure
     build: stats-service/server
     image: stats-service
     container_name: stats-service
@@ -12,9 +11,7 @@ services:
     depends_on:
       - stats-db
     environment:
-      - spring_datasource_url=jdbc:postgresql://stats-db:5432/stats-server-db
-      - spring.datasource.user=root
-      - spring.datasource.password=root
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stats-server-db
 
   stats-db:
     image: postgres:14.3-alpine
@@ -25,11 +22,8 @@ services:
       - POSTGRES_DB=stats-server-db
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
-    volumes:
-      - stats-db-data:/var/lib/postgresql/data
 
   ewm-service:
-    restart: on-failure
     build: ewm-service
     image: ewm-service
     container_name: ewm-service
@@ -49,5 +43,3 @@ services:
       - POSTGRES_DB=ewm-server-db
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
-volumes:
-  stats-db-data:
