@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ServiceImpl implements HitService {
 
-    private final Repository repository;
+    private final HitRepository repository;
 
     @Override
     @Transactional

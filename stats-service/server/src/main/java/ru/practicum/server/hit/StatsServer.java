@@ -1,4 +1,4 @@
-package ru.practicum.server;
+package ru.practicum.server.hit;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
