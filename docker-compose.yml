@@ -11,9 +11,9 @@ services:
     depends_on:
       - stats-db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stats-server-db
-    restart: always
-  #      - TZ=Europe/Moscow
+      - spring_datasource_url=jdbc:postgresql://stats-db:5432/stats-server-db
+      - spring.datasource.user=root
+      - spring.datasource.password=root
 
   stats-db:
     image: postgres:14.3-alpine
@@ -26,7 +26,6 @@ services:
       - POSTGRES_PASSWORD=root
     volumes:
       - stats-db-data:/var/lib/postgresql/data
-  #      - TZ=Europe/Moscow
 
   ewm-service:
     build: ewm-service
@@ -38,7 +37,6 @@ services:
       - ewm-db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/ewm-server-db
-  #      - TZ=Europe/Moscow
 
   ewm-db:
     image: postgres:14.3-alpine
@@ -49,8 +47,3 @@ services:
       - POSTGRES_DB=ewm-server-db
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
-#      - TZ=Europe/Moscow
-
-volumes:
-  stats-db-data:
-
