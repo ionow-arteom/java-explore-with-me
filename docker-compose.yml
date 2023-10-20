@@ -47,3 +47,5 @@ services:
       - POSTGRES_DB=ewm-server-db
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
+volumes:
+  stats-db-data:
