@@ -18,6 +18,7 @@ services:
   stats-db:
     image: postgres:14.3-alpine
     container_name: stats-db
+    restart: always
     ports:
       - "6541:5432"
     environment:
