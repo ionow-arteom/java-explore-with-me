@@ -1,4 +1,4 @@
-package ru.practicum.server.hit;
+package ru.practicum;
 
 import lombok.*;
 
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "hits",schema = "public")
+@Table(name = "hits", schema = "public")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Hit {
 

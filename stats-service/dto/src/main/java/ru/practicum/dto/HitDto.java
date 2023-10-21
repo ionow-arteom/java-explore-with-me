@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 public class HitDto {
-    private long id;
+    private Long id;
 
     @NotNull(message = "app cannot be null")
     @NotBlank(message = "app cannot consist only of spaces")

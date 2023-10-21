@@ -1,4 +1,4 @@
-package ru.practicum.server.hit;
+package ru.practicum;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
