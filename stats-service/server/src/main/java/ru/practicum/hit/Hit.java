@@ -1,31 +1,31 @@
-package ru.practicum;
+package ru.practicum.hit;
 
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "hits", schema = "public")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Hit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
     private Long id;
 
-    @Column(name = "app", nullable = false)
+    @Column(nullable = false)
     private String app;
 
-    @Column(name = "uri", nullable = false)
+    @Column(nullable = false)
     private String uri;
 
-    @Column(name = "ip", nullable = false)
+    @Column(nullable = false)
     private String ip;
 
     @Column(name = "time_stamp", nullable = false)

@@ -1,4 +1,4 @@
-package ru.practicum;
+package ru.practicum.hit;
 
 import ru.practicum.dto.HitDto;
 import ru.practicum.dto.StatsDto;
