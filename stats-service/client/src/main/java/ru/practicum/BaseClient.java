@@ -5,55 +5,49 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
 public class BaseClient {
-    protected final RestTemplate rest;
+    private final RestTemplate restTemplate;
 
-    public BaseClient(RestTemplate rest) {
-        this.rest = rest;
+    public BaseClient(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
-    protected <T> ResponseEntity<Object> post(String path,T body) {
-        return makeAndSendRequest(HttpMethod.POST,path, null, body);
+    protected <T> ResponseEntity<Object> post(String endpoint, T payload) {
+        return executeRequest(HttpMethod.POST, endpoint, null, payload);
     }
 
-    protected ResponseEntity<Object> get(String path, @Nullable Map<String, Object> parameters) {
-        return makeAndSendRequest(HttpMethod.GET,path, parameters, null);
+    protected ResponseEntity<Object> get(String endpoint, @Nullable Map<String, Object> queryParams) {
+        return executeRequest(HttpMethod.GET, endpoint, queryParams, null);
     }
 
-    private <T> ResponseEntity<Object> makeAndSendRequest(HttpMethod method, String path,
-                                                          @Nullable Map<String, Object> parameters, @Nullable T body) {
-        HttpEntity<T> requestEntity = new HttpEntity<>(body, defaultHeaders());
-        ResponseEntity<Object> statsServiceResponse;
+    private <T> ResponseEntity<Object> executeRequest(HttpMethod httpMethod, String endpoint,
+                                                      @Nullable Map<String, Object> queryParams, @Nullable T payload) {
+        HttpEntity<T> httpEntity = new HttpEntity<>(payload, createDefaultHeaders());
         try {
-            if (parameters != null) {
-                statsServiceResponse = rest.exchange(path, method, requestEntity, Object.class, parameters);
-            } else {
-                statsServiceResponse = rest.exchange(path, method, requestEntity, Object.class);
-            }
-        } catch (HttpStatusCodeException e) {
-            return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsByteArray());
+            return restTemplate.exchange(endpoint, httpMethod, httpEntity, Object.class,
+                    Optional.ofNullable(queryParams).orElse(Collections.emptyMap()));
+        } catch (HttpStatusCodeException ex) {
+            return ResponseEntity.status(ex.getStatusCode()).body(ex.getResponseBodyAsByteArray());
         }
-        return prepareGatewayResponse(statsServiceResponse);
     }
 
-    private HttpHeaders defaultHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        return headers;
+    private HttpHeaders createDefaultHeaders() {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        return httpHeaders;
     }
 
-    private static ResponseEntity<Object> prepareGatewayResponse(ResponseEntity<Object> response) {
-        if (response.getStatusCode().is2xxSuccessful()) {
-            return response;
+    private static ResponseEntity<Object> processResponse(ResponseEntity<Object> originalResponse) {
+        HttpStatus status = originalResponse.getStatusCode();
+        if (status.is2xxSuccessful()) {
+            return originalResponse;
         }
-        ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.status(response.getStatusCode());
-        if (response.hasBody()) {
-            return responseBuilder.body(response.getBody());
-        }
-        return responseBuilder.build();
+        ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.status(status);
+        return originalResponse.hasBody() ? responseBuilder.body(originalResponse.getBody()) : responseBuilder.build();
     }
 }
