@@ -8,7 +8,7 @@ import ru.practicum.compilation.Compilation;
 import ru.practicum.compilation.CompilationRepository;
 import ru.practicum.events.EventRepository;
 import ru.practicum.events.model.Event;
-import ru.practicum.errorhandling.exception.NotFoundException;
+import ru.practicum.errorhandling.NotFoundException;
 import ru.practicum.request.Request;
 import ru.practicum.request.RequestRepository;
 import ru.practicum.user.User;

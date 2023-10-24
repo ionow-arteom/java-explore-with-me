@@ -1,6 +1,6 @@
 package ru.practicum.util.enumerated;
 
-import ru.practicum.errorhandling.exception.ValidationException;
+import ru.practicum.errorhandling.ValidationException;
 
 public enum StateAction {
     PUBLISH_EVENT,

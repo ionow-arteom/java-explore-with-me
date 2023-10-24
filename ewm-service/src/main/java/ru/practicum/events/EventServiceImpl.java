@@ -15,9 +15,9 @@ import ru.practicum.dto.StatsDto;
 import ru.practicum.events.dto.*;
 import ru.practicum.events.model.Event;
 import ru.practicum.events.model.Location;
-import ru.practicum.errorhandling.exception.ConflictException;
-import ru.practicum.errorhandling.exception.NotFoundException;
-import ru.practicum.errorhandling.exception.ValidationException;
+import ru.practicum.errorhandling.ConflictException;
+import ru.practicum.errorhandling.NotFoundException;
+import ru.practicum.errorhandling.ValidationException;
 import ru.practicum.request.Request;
 import ru.practicum.request.RequestMapper;
 import ru.practicum.request.RequestRepository;
@@ -258,7 +258,7 @@ public class EventServiceImpl implements EventService {
         log.info("Fetched {} public events with given parameters", events.size());
         return EventMapper.toEventShortDtoList(events);
     }
-    
+
     private Event baseUpdateEvent(Event event, EventUpdate eventUpdateDto) {
 
         log.info("Updating event with ID: {}", event.getId());
