@@ -1,16 +1,14 @@
 package ru.practicum.hit;
 
 import ru.practicum.dto.HitDto;
+import static ru.practicum.dto.utilities.Constants.DATE_TIME_FORMATTER;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class Mapper {
-
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public static HitDto toHitDto(Hit hit) {
         return HitDto.builder()

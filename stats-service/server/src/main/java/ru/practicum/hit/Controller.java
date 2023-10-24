@@ -9,15 +9,14 @@ import ru.practicum.dto.StatsDto;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import static ru.practicum.dto.utilities.Constants.DATE_TIME_FORMATTER;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class Controller {
-
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private final HitService service;
 

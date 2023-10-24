@@ -14,12 +14,12 @@ import ru.practicum.dto.HitDto;
 import ru.practicum.dto.StatsDto;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static ru.practicum.dto.utilities.Constants.DATE_TIME_FORMATTER;
 
 public class ControllerTest {
 
@@ -32,9 +32,6 @@ public class ControllerTest {
     private MockMvc mockMvc;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-
-    private static final DateTimeFormatter TEST_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
 
     @BeforeEach
     public void setUp() {
@@ -65,8 +62,8 @@ public class ControllerTest {
         when(service.findStats(any(), any(), any(), any())).thenReturn(Collections.singletonList(statsDto));
 
         mockMvc.perform(get("/stats")
-                        .param("start", start.format(TEST_DATE_TIME_FORMATTER))
-                        .param("end", end.format(TEST_DATE_TIME_FORMATTER)))
+                        .param("start", start.format(DATE_TIME_FORMATTER))
+                        .param("end", end.format(DATE_TIME_FORMATTER)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json("[{'app':'testApp', 'uri':'/testUri', 'hits':10}]"));

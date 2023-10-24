@@ -5,16 +5,13 @@ import org.junit.jupiter.api.Test;
 import ru.practicum.dto.HitDto;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static ru.practicum.dto.utilities.Constants.DATE_TIME_FORMATTER;
 
 public class MapperTest {
-
-    private static final DateTimeFormatter TEST_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
 
     @Test
     @DisplayName("Ensure Hit is correctly mapped to HitDto")
@@ -26,7 +23,7 @@ public class MapperTest {
         assertEquals(hit.getApp(), hitDto.getApp());
         assertEquals(hit.getUri(), hitDto.getUri());
         assertEquals(hit.getIp(), hitDto.getIp());
-        assertEquals(hit.getTimestamp().format(TEST_DATE_TIME_FORMATTER), hitDto.getTimestamp());
+        assertEquals(hit.getTimestamp().format(DATE_TIME_FORMATTER), hitDto.getTimestamp());
     }
 
     @Test
@@ -39,7 +36,7 @@ public class MapperTest {
         assertEquals(hitDto.getApp(), hit.getApp());
         assertEquals(hitDto.getUri(), hit.getUri());
         assertEquals(hitDto.getIp(), hit.getIp());
-        assertEquals(LocalDateTime.parse(hitDto.getTimestamp(), TEST_DATE_TIME_FORMATTER), hit.getTimestamp());
+        assertEquals(LocalDateTime.parse(hitDto.getTimestamp(), DATE_TIME_FORMATTER), hit.getTimestamp());
     }
 
     @Test
