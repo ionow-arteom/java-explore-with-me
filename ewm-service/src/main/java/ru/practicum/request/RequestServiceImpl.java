@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.errorhandling.BadRequestException;
 import ru.practicum.events.EventRepository;
 import ru.practicum.errorhandling.ConflictException;
 import ru.practicum.user.User;
@@ -30,9 +29,6 @@ public class RequestServiceImpl implements RequestService {
     public RequestDto addRequest(Long userId, Long eventId) {
         User user = unionService.getUserOrNotFound(userId);
         Event event = unionService.getEventOrNotFound(eventId);
-        if (userId == null || eventId == null) {
-            throw new BadRequestException("userId and eventId are mandatory query parameters and cannot be null.");
-        }
         if (event.getParticipantLimit() <= event.getConfirmedRequests() && event.getParticipantLimit() != 0) {
             throw new ConflictException(String.format("Event %s requests exceed the limit", event));
         }

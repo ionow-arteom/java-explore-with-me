@@ -1,5 +1,7 @@
 package ru.practicum.util.enumerated;
 
+import ru.practicum.errorhandling.ValidationException;
+
 public enum Status {
 
     PENDING,
@@ -11,7 +13,7 @@ public enum Status {
         try {
             return Status.valueOf(status);
         } catch (Exception e) {
-            throw new IllegalStateException("Unknow status: " + status);
+            throw new ValidationException("Unknown status: " + status);
         }
     }
 }

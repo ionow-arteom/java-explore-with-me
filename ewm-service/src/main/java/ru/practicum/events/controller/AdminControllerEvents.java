@@ -23,14 +23,13 @@ public class AdminControllerEvents {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<EventFull> getEventsByAdmin(
-            @RequestParam(required = false) List<Long> users,
-            @RequestParam(required = false) List<String> states,
-            @RequestParam(required = false) List<Long> categories,
-            @RequestParam(required = false) String rangeStart,
-            @RequestParam(required = false) String rangeEnd,
-            @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
-            @Positive @RequestParam(defaultValue = "10") Integer size) {
+    public List<EventFull> getEventsByAdmin(@RequestParam(required = false, name = "users") List<Long> users,
+                                            @RequestParam(required = false, name = "states") List<String> states,
+                                            @RequestParam(required = false, name = "categories") List<Long> categories,
+                                            @RequestParam(required = false, name = "rangeStart") String rangeStart,
+                                            @RequestParam(required = false, name = "rangeEnd") String rangeEnd,
+                                            @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
+                                            @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
 
         log.info("Admin is fetching events with parameters: users={}, states={}, categories={}, rangeStart={}, rangeEnd={}, from={}, size={}",
                 users, states, categories, rangeStart, rangeEnd, from, size);

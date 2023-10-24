@@ -23,15 +23,15 @@ public class PublicControllerEvents {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<EventShort> getEventsByPublic(@RequestParam(required = false) String text,
-                                              @RequestParam(required = false) List<Long> categories,
-                                              @RequestParam(required = false) Boolean paid,
-                                              @RequestParam(required = false) String rangeStart,
-                                              @RequestParam(required = false) String rangeEnd,
-                                              @RequestParam(defaultValue = "false") Boolean onlyAvailable,
-                                              @RequestParam(required = false) String sort,
-                                              @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
-                                              @Positive @RequestParam(defaultValue = "10") Integer size,
+    public List<EventShort> getEventsByPublic(@RequestParam(required = false, name = "text") String text,
+                                              @RequestParam(required = false, name = "categories") List<Long> categories,
+                                              @RequestParam(required = false, name = "paid") Boolean paid,
+                                              @RequestParam(required = false, name = "rangeStart") String rangeStart,
+                                              @RequestParam(required = false, name = "rangeEnd") String rangeEnd,
+                                              @RequestParam(required = false, defaultValue = "false", name = "onlyAvailable") Boolean onlyAvailable,
+                                              @RequestParam(required = false, name = "sort") String sort,
+                                              @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
+                                              @Positive @RequestParam(name = "size", defaultValue = "10") Integer size,
                                               HttpServletRequest request) {
         String uri = getUriFromRequest(request);
         String ip = getIpFromRequest(request);

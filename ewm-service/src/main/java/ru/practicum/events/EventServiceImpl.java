@@ -307,51 +307,6 @@ public class EventServiceImpl implements EventService {
         }
     }
 
-
-//    private Event baseUpdateEvent(Event event, EventUpdate eventUpdate) {
-//
-//        if (eventUpdate.getAnnotation() != null && !eventUpdate.getAnnotation().isBlank()) {
-//            event.setAnnotation(eventUpdate.getAnnotation());
-//        }
-//        if (eventUpdate.getCategory() != null) {
-//            event.setCategory(unionService.getCategoryOrNotFound(eventUpdate.getCategory()));
-//        }
-//        if (eventUpdate.getDescription() != null && !eventUpdate.getDescription().isBlank()) {
-//            event.setDescription(eventUpdate.getDescription());
-//        }
-//        if (eventUpdate.getEventDate() != null) {
-//            event.setEventDate(eventUpdate.getEventDate());
-//        }
-//        if (eventUpdate.getLocation() != null) {
-//            event.setLocation(LocationMapper.returnLocation(eventUpdate.getLocation()));
-//        }
-//        if (eventUpdate.getPaid() != null) {
-//            event.setPaid(eventUpdate.getPaid());
-//        }
-//        if (eventUpdate.getParticipantLimit() != null) {
-//            event.setParticipantLimit(eventUpdate.getParticipantLimit());
-//        }
-//        if (eventUpdate.getRequestModeration() != null) {
-//            event.setRequestModeration(eventUpdate.getRequestModeration());
-//        }
-//        if (eventUpdate.getStateAction() != null) {
-//            if (eventUpdate.getStateAction() == StateAction.PUBLISH_EVENT) {
-//                event.setState(PUBLISHED);
-//                event.setPublishedOn(LocalDateTime.now());
-//            } else if (eventUpdate.getStateAction() == StateAction.REJECT_EVENT ||
-//                    eventUpdate.getStateAction() == StateAction.CANCEL_REVIEW) {
-//                event.setState(State.CANCELED);
-//            } else if (eventUpdate.getStateAction() == StateAction.SEND_TO_REVIEW) {
-//                event.setState(State.PENDING);
-//            }
-//        }
-//        if (eventUpdate.getTitle() != null && !eventUpdate.getTitle().isBlank()) {
-//            event.setTitle(eventUpdate.getTitle());
-//        }
-//        locationRepository.save(event.getLocation());
-//        return eventRepository.save(event);
-//    }
-
     private void sendInfo(String uri, String ip) {
         HitDto hitDto = HitDto.builder()
                 .app("ewm-service")

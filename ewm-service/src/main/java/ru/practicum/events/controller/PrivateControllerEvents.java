@@ -24,7 +24,7 @@ public class PrivateControllerEvents {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public EventFull addEvent(@Valid @RequestBody EventNew eventNew,
-                                 @PathVariable Long userId) {
+                              @PathVariable Long userId) {
 
         log.info("User with ID {} is adding an event with annotation: {}", userId, eventNew.getAnnotation());
         return eventService.addEvent(userId, eventNew);
@@ -33,8 +33,8 @@ public class PrivateControllerEvents {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<EventShort> getAllEventsByUserId(@PathVariable Long userId,
-                                                 @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
-                                                 @Positive @RequestParam(defaultValue = "10") Integer size) {
+                                                 @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
+                                                 @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
 
         log.info("Fetching events for User with ID {}. Pagination details: from={}, size={}", userId, from, size);
         return eventService.getAllEventsByUserId(userId, from, size);
@@ -51,9 +51,9 @@ public class PrivateControllerEvents {
 
     @PatchMapping("/{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public EventFull updateEventByUserId(@Valid @RequestBody EventUpdate eventUpdate,
-                                            @PathVariable Long userId,
-                                            @PathVariable Long eventId) {
+    public EventFull updateEventByUserId(@RequestBody @Valid EventUpdate eventUpdate,
+                                         @PathVariable Long userId,
+                                         @PathVariable Long eventId) {
 
         log.info("User with ID {} is updating Event with ID {}. Annotation: {}", userId, eventId, eventUpdate.getAnnotation());
         return eventService.updateEventByUserId(eventUpdate, userId, eventId);
@@ -72,7 +72,7 @@ public class PrivateControllerEvents {
     @ResponseStatus(HttpStatus.OK)
     public RequestUpdateResult updateStatusRequestsForEventIdByUserId(@PathVariable Long userId,
                                                                       @PathVariable Long eventId,
-                                                                      @Valid @RequestBody RequestUpdate requestDto) {
+                                                                      @RequestBody RequestUpdate requestDto) {
 
         log.info("Updating status request for Event with ID {} by User with ID {}", eventId, userId);
         return eventService.updateStatusRequestsForEventIdByUserId(requestDto, userId, eventId);
