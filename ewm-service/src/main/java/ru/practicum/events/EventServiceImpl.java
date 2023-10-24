@@ -258,6 +258,7 @@ public class EventServiceImpl implements EventService {
         log.info("Fetched {} public events with given parameters", events.size());
         return EventMapper.toEventShortDtoList(events);
     }
+    
     private Event baseUpdateEvent(Event event, EventUpdate eventUpdateDto) {
 
         log.info("Updating event with ID: {}", event.getId());
