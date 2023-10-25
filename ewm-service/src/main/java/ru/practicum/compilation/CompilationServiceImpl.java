@@ -28,7 +28,7 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Override
     @Transactional
-    public CompilationDto addCompilation(CompilationNewDto compilationNewDto) {
+    public CompilationDto add(CompilationNewDto compilationNewDto) {
         Compilation compilation = CompilationMapper.returnCompilation(compilationNewDto);
         setCompilationDefaults(compilation, compilationNewDto.getEvents());
         log.info("Adding compilation with title: {}", compilation.getTitle());
@@ -37,7 +37,7 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Override
     @Transactional
-    public void deleteCompilation(Long compId) {
+    public void delete(Long compId) {
         unionService.getCompilationOrNotFound(compId);
         compilationRepository.deleteById(compId);
         log.info("Deleted compilation with ID: {}", compId);
@@ -45,7 +45,7 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Override
     @Transactional
-    public CompilationDto updateCompilation(Long compId, CompilationUpdateDto compilationUpdateDto) {
+    public CompilationDto update(Long compId, CompilationUpdateDto compilationUpdateDto) {
         Compilation compilation = unionService.getCompilationOrNotFound(compId);
         setCompilationDefaults(compilation, compilationUpdateDto.getEvents());
         if (compilationUpdateDto.getTitle() != null) {
@@ -56,17 +56,21 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    public List<CompilationDto> getCompilations(Boolean pinned, Integer from, Integer size) {
+    public List<CompilationDto> getList(Boolean pinned, Integer from, Integer size) {
+
         PageRequest pageRequest = PageRequest.of(from / size, size);
-        List<Compilation> compilations = pinned ?
-                compilationRepository.findByPinned(pinned, pageRequest) :
-                compilationRepository.findAll(pageRequest).getContent();
-        log.info("Fetching compilations. Pinned: {}. Page: {}. Size: {}", pinned, from / size, size);
+        List<Compilation> compilations;
+
+        if (pinned) {
+            compilations = compilationRepository.findByPinned(pinned, pageRequest);
+        } else {
+            compilations = compilationRepository.findAll(pageRequest).getContent();;
+        }
         return new ArrayList<>(CompilationMapper.returnCompilationDtoSet(compilations));
     }
 
     @Override
-    public CompilationDto getCompilationById(Long compId) {
+    public CompilationDto getById(Long compId) {
         Compilation compilation = unionService.getCompilationOrNotFound(compId);
         log.info("Fetching compilation with ID: {}", compId);
         return CompilationMapper.returnCompilationDto(compilation);

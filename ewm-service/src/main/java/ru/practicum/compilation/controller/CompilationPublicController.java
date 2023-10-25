@@ -27,13 +27,13 @@ public class CompilationPublicController {
             @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
 
         log.info("Fetching compilations: pinned={}, from={}, size={}", pinned, from, size);
-        return compilationService.getCompilations(pinned, from, size);
+        return compilationService.getList(pinned, from, size);
     }
 
     @GetMapping("/{compId}")
     @ResponseStatus(HttpStatus.OK)
     public CompilationDto getCompilationById(@PathVariable Long compId) {
         log.info("Fetching Compilation with ID: {}", compId);
-        return compilationService.getCompilationById(compId);
+        return compilationService.getById(compId);
     }
 }

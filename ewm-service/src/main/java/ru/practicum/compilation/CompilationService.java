@@ -13,13 +13,13 @@ public interface CompilationService {
      * @param compilationData Data for the new compilation.
      * @return The created compilation DTO.
      */
-    CompilationDto addCompilation(CompilationNewDto compilationData);
+    CompilationDto add(CompilationNewDto compilationData);
 
     /**
      * Deletes a compilation by its ID.
      * @param compilationId ID of the compilation to delete.
      */
-    void deleteCompilation(Long compilationId);
+    void delete(Long compilationId);
 
     /**
      * Updates an existing compilation.
@@ -27,7 +27,7 @@ public interface CompilationService {
      * @param updateData Data to update the compilation with.
      * @return The updated compilation DTO.
      */
-    CompilationDto updateCompilation(Long compilationId, CompilationUpdateDto updateData);
+    CompilationDto update(Long compilationId, CompilationUpdateDto updateData);
 
     /**
      * Retrieves a list of compilations based on the provided criteria.
@@ -36,12 +36,12 @@ public interface CompilationService {
      * @param size The number of compilations to retrieve.
      * @return A list of compilation DTOs.
      */
-    List<CompilationDto> getCompilations(Boolean pinned, Integer from, Integer size);
+    List<CompilationDto> getList(Boolean pinned, Integer from, Integer size);
 
     /**
      * Retrieves a compilation by its ID.
      * @param compilationId ID of the compilation to retrieve.
      * @return The compilation DTO.
      */
-    CompilationDto getCompilationById(Long compilationId);
+    CompilationDto getById(Long compilationId);
 }

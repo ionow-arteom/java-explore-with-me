@@ -23,14 +23,14 @@ public class CompilationAdminController {
     @ResponseStatus(HttpStatus.CREATED)
     public CompilationDto addCompilation(@Valid @RequestBody CompilationNewDto compilationNewDto) {
         log.info("Adding Compilation with title: {}", compilationNewDto.getTitle());
-        return compilationService.addCompilation(compilationNewDto);
+        return compilationService.add(compilationNewDto);
     }
 
     @DeleteMapping("/{compId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCompilation(@PathVariable Long compId) {
         log.info("Deleting Compilation with ID: {}", compId);
-        compilationService.deleteCompilation(compId);
+        compilationService.delete(compId);
     }
 
     @PatchMapping("/{compId}")
@@ -38,6 +38,6 @@ public class CompilationAdminController {
     public CompilationDto updateCompilation(@Valid @RequestBody CompilationUpdateDto compilationUpdateDto,
                                             @PathVariable Long compId) {
         log.info("Updating Compilation with ID: {}", compId);
-        return compilationService.updateCompilation(compId, compilationUpdateDto);
+        return compilationService.update(compId, compilationUpdateDto);
     }
 }
