@@ -2,30 +2,34 @@ package ru.practicum.categories;
 
 import lombok.experimental.UtilityClass;
 
-import java.util.stream.Collectors;
+import java.util.ArrayList;
 import java.util.List;
 
 @UtilityClass
 public class CategoryMapper {
-
     public CategoryDto returnCategoryDto(Category category) {
-        return CategoryDto.builder()
+        CategoryDto categoryDto = CategoryDto.builder()
                 .id(category.getId())
                 .name(category.getName())
                 .build();
+        return categoryDto;
     }
 
     public Category returnCategory(CategoryDto categoryDto) {
-        return Category.builder()
+        Category category = Category.builder()
                 .id(categoryDto.getId())
                 .name(categoryDto.getName())
                 .build();
+        return category;
     }
 
-    public List<CategoryDto> returnCategoryDtoList(List<Category> categories) {
-        return categories.stream()
-                .map(CategoryMapper::returnCategoryDto)
-                .collect(Collectors.toList());
+    public List<CategoryDto> returnCategoryDtoList(Iterable<Category> categories) {
+        List<CategoryDto> result = new ArrayList<>();
+
+        for (Category category : categories) {
+            result.add(returnCategoryDto(category));
+        }
+        return result;
     }
 }
 

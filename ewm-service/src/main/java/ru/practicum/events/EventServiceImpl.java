@@ -1,7 +1,5 @@
 package ru.practicum.events;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +25,8 @@ import ru.practicum.util.enumerated.StateAction;
 import ru.practicum.util.enumerated.Status;
 import ru.practicum.util.UnionService;
 import ru.practicum.util.enumerated.State;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -312,15 +312,15 @@ public class EventServiceImpl implements EventService {
                 .app("ewm-service")
                 .uri(uri)
                 .ip(ip)
-                .timestamp(String.valueOf(LocalDateTime.now()))
+                .timestamp(LocalDateTime.now())
                 .build();
-        client.add(hitDto);
+        client.addHit(hitDto);
     }
 
     private Long getViewsEventById(Long eventId) {
 
         String uri = "/events/" + eventId;
-        ResponseEntity<Object> response = client.findStats(String.valueOf(START_TIME), String.valueOf(LocalDateTime.now()), new String[]{uri}, true);
+        ResponseEntity<Object> response = client.findStats(START_TIME, LocalDateTime.now(), uri, true);
         List<StatsDto> result = objectMapper.convertValue(response.getBody(), new TypeReference<>() {});
         if (result.isEmpty()) {
             return 0L;

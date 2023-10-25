@@ -9,51 +9,39 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.dto.HitDto;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+
+import static ru.practicum.dto.utilities.Constants.TIME_ORDER;
 
 @Service
 public class StatsClient extends BaseClient {
 
-    @Autowired
-    public StatsClient(@Value("${stats-server.url}") String serverUrl, RestTemplateBuilder restTemplateBuilder) {
-        super(restTemplateBuilder
-                .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
-                .requestFactory(HttpComponentsClientHttpRequestFactory::new)
-                .build());
-    }
-
-    public ResponseEntity<Object> add(HitDto hitDto) {
+    public ResponseEntity<Object> addHit(HitDto hitDto) {
         return post("/hit", hitDto);
     }
 
-    public ResponseEntity<Object> findStats(String start, String end, String[] uris, boolean unique) {
-        return get(buildUri("/stats", start, end, uris, unique), buildParameters(start, end, uris, unique));
+    @Autowired
+    public StatsClient(@Value("${stats-server.url}") String serverUrl, RestTemplateBuilder builder) {
+
+        super(
+                builder
+                        .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
+                        .requestFactory(HttpComponentsClientHttpRequestFactory::new)
+                        .build()
+        );
     }
 
-    public ResponseEntity<Object> findStatsWithoutUris(String start, String end, boolean unique) {
-        return get(buildUri("/stats", start, end, null, unique), buildParameters(start, end, null, unique));
-    }
+    public ResponseEntity<Object> findStats(LocalDateTime start, LocalDateTime  end, String uris, boolean unique) {
 
-    private String buildUri(String baseUri, String start, String end, String[] uris, boolean unique) {
-        StringBuilder uriBuilder = new StringBuilder(baseUri);
-        uriBuilder.append("?start=").append(start)
-                .append("&end=").append(end)
-                .append("&unique=").append(unique);
-        if (uris != null && uris.length > 0) {
-            uriBuilder.append("&uris=").append(String.join(",", uris));
-        }
-        return uriBuilder.toString();
-    }
-
-    private Map<String, Object> buildParameters(String start, String end, String[] uris, boolean unique) {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("start", start);
-        parameters.put("end", end);
-        parameters.put("unique", unique);
-        if (uris != null && uris.length > 0) {
-            parameters.put("uris", uris);
-        }
-        return parameters;
+        Map<String, Object> parameters = Map.of(
+                "start", start.format(DateTimeFormatter.ofPattern(TIME_ORDER)),
+                "end", end.format(DateTimeFormatter.ofPattern(TIME_ORDER)),
+                "uris", uris,
+                "unique", unique
+        );
+        return get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
     }
 }

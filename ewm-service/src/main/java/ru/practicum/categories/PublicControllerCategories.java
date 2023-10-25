@@ -2,7 +2,7 @@ package ru.practicum.categories;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
@@ -18,21 +18,20 @@ public class PublicControllerCategories {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> fetchCategories(
-            @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
-            @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
+    @ResponseStatus(HttpStatus.OK)
+    public List<CategoryDto> getCategories(@PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
+                                           @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
 
-        log.info("Fetching categories: starting from {} with size of {}", from, size);
-        List<CategoryDto> categories = categoryService.getList(from, size);
-        return ResponseEntity.ok(categories);
+        log.info("List Categories, where: from = {}, size = {}", from, size);
+        return categoryService.getList(from, size);
     }
 
-    @GetMapping("/{categoryId}")
-    public ResponseEntity<CategoryDto> fetchCategory(@PathVariable Long categoryId) {
+    @GetMapping("/{catId}")
+    @ResponseStatus(HttpStatus.OK)
+    public CategoryDto getCategory(@PathVariable("catId") Long categoryId) {
 
-        log.info("Fetching category with ID: {}", categoryId);
-        CategoryDto category = categoryService.getById(categoryId);
-        return ResponseEntity.ok(category);
+        log.info("Get Category id {}", categoryId);
+        return categoryService.getById(categoryId);
     }
 }
 

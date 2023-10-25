@@ -39,7 +39,7 @@ public class EventMapper {
     }
 
     public EventFull toEventFullDto(Event event) {
-        return EventFull.builder()
+        EventFull eventFullDto = EventFull.builder()
                 .annotation(event.getAnnotation())
                 .category(CategoryMapper.returnCategoryDto(event.getCategory()))
                 .confirmedRequests(event.getConfirmedRequests())
@@ -47,7 +47,7 @@ public class EventMapper {
                 .description(event.getDescription())
                 .eventDate(event.getEventDate())
                 .id(event.getId())
-                .initiator(UserMapper.toUserShortDto((event.getInitiator())))
+                .initiator(UserMapper.toUserShortDto(event.getInitiator()))
                 .location(LocationMapper.returnLocationDto(event.getLocation()))
                 .paid(event.getPaid())
                 .participantLimit(event.getParticipantLimit())
@@ -57,6 +57,7 @@ public class EventMapper {
                 .title(event.getTitle())
                 .views(event.getViews())
                 .build();
+        return eventFullDto;
     }
 
     public EventShort toEventShortDto(Event event) {
