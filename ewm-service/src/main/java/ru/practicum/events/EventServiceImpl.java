@@ -19,7 +19,7 @@ import ru.practicum.errorhandling.ValidationException;
 import ru.practicum.request.Request;
 import ru.practicum.request.RequestMapper;
 import ru.practicum.request.RequestRepository;
-import ru.practicum.request.RequestDto;
+import ru.practicum.request.dto.RequestDto;
 import ru.practicum.user.User;
 import ru.practicum.util.enumerated.StateAction;
 import ru.practicum.util.enumerated.Status;

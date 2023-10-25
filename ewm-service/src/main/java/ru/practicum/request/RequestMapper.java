@@ -2,6 +2,7 @@ package ru.practicum.request;
 
 import lombok.experimental.UtilityClass;
 import ru.practicum.events.model.Event;
+import ru.practicum.request.dto.RequestDto;
 import ru.practicum.user.User;
 import ru.practicum.util.enumerated.Status;
 

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.events.EventRepository;
 import ru.practicum.errorhandling.ConflictException;
+import ru.practicum.request.dto.RequestDto;
 import ru.practicum.user.User;
 import ru.practicum.events.model.Event;
 import ru.practicum.util.enumerated.State;

@@ -1,5 +1,7 @@
 package ru.practicum.categories;
 
+import ru.practicum.categories.dto.CategoryDto;
+
 import java.util.List;
 
 public interface CategoryService {

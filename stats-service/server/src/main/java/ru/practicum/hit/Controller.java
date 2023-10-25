@@ -28,6 +28,7 @@ public class Controller {
     }
 
     @GetMapping("/stats")
+    @ResponseStatus(HttpStatus.OK)
     public List<StatsDto> retrieveStats(@RequestParam String start,
                                         @RequestParam String end,
                                         @RequestParam(required = false) List<String> uris,

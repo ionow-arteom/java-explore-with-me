@@ -1,10 +1,12 @@
-package ru.practicum.categories;
+package ru.practicum.categories.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.categories.dto.CategoryDto;
+import ru.practicum.categories.CategoryService;
 
 import javax.validation.Valid;
 

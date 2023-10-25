@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.user.dto.UserDto;
 import ru.practicum.util.UnionService;
 
 import java.util.List;
