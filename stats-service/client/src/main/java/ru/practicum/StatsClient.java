@@ -11,7 +11,6 @@ import ru.practicum.dto.HitDto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.Map;
 
 import static ru.practicum.dto.utilities.Constants.TIME_ORDER;
