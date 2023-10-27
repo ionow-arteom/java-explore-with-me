@@ -7,6 +7,7 @@ import ru.practicum.events.EventMapper;
 import ru.practicum.events.dto.EventShort;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @UtilityClass
@@ -30,7 +31,7 @@ public class CompilationMapper {
     }
 
     public Set<CompilationDto> returnCompilationDtoSet(Iterable<Compilation> compilations) {
-        Set<CompilationDto> result = new HashSet<>();
+        Set<CompilationDto> result = new LinkedHashSet<>();
         for (Compilation compilation : compilations) {
             result.add(returnCompilationDto(compilation));
         }
