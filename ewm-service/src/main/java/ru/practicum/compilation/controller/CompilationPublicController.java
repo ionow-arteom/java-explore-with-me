@@ -25,7 +25,7 @@ public class CompilationPublicController {
             @RequestParam(defaultValue = "false", name = "pinned") Boolean pinned,
             @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
             @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
-
+        log.info("ЗНАЧЕНИЕ FROM getcompilations: {}", from);
         log.info("Fetching compilations: pinned={}, from={}, size={}", pinned, from, size);
         return compilationService.getList(pinned, from, size);
     }

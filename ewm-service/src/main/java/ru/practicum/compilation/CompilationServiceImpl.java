@@ -58,9 +58,10 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     public List<CompilationDto> getList(Boolean pinned, Integer from, Integer size) {
 
+        log.info("ЗНАЧЕНИЕ FROM: {}", from);
         PageRequest pageRequest = PageRequest.of(from / size, size);
         List<Compilation> compilations;
-
+        log.info("ЗНАЧЕНИЕ FROM: {} getlist", from);
         if (pinned) {
             compilations = compilationRepository.findByPinned(pinned, pageRequest);
         } else {
