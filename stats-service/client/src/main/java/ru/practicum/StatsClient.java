@@ -3,7 +3,6 @@ package ru.practicum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
@@ -34,11 +33,8 @@ public class StatsClient extends BaseClient {
         );
     }
 
-    public ResponseEntity<Object> findStats(LocalDateTime start, LocalDateTime end, String uris, boolean unique) {
-        if (start.isAfter(end)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Start date must be before end date");
-        }
+    public ResponseEntity<Object> findStats(LocalDateTime start, LocalDateTime  end, String uris, boolean unique) {
+
         Map<String, Object> parameters = Map.of(
                 "start", start.format(DateTimeFormatter.ofPattern(TIME_ORDER)),
                 "end", end.format(DateTimeFormatter.ofPattern(TIME_ORDER)),
@@ -47,4 +43,5 @@ public class StatsClient extends BaseClient {
         );
         return get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
     }
+
 }
