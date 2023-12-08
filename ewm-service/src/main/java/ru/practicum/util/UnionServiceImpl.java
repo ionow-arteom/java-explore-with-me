@@ -1,6 +1,7 @@
 package ru.practicum.util;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.categories.Category;
 import ru.practicum.categories.CategoryRepository;
@@ -15,10 +16,10 @@ import ru.practicum.user.User;
 import ru.practicum.user.UserRepository;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import static ru.practicum.dto.utilities.Constants.DATE_TIME_FORMATTER;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UnionServiceImpl implements UnionService {
@@ -31,68 +32,58 @@ public class UnionServiceImpl implements UnionService {
 
     @Override
     public User getUserOrNotFound(Long userId) {
-
-        Optional<User> user = userRepository.findById(userId);
-
-        if (user.isEmpty()) {
-            throw new NotFoundException(User.class, "User id " + userId + " not found.");
-        } else {
-            return user.get();
-        }
+        return userRepository.findById(userId)
+                .orElseThrow(() -> {
+                    log.error("User not found with ID: {}", userId);
+                    return new NotFoundException(User.class, "User id " + userId + " not found.");
+                });
     }
 
     @Override
     public Category getCategoryOrNotFound(Long categoryId) {
-
-        Optional<Category> category = categoryRepository.findById(categoryId);
-
-        if (category.isEmpty()) {
-            throw new NotFoundException(Category.class, "Category id " + categoryId + " not found.");
-        } else {
-            return category.get();
-        }
+        return categoryRepository.findById(categoryId)
+                .orElseThrow(() -> {
+                    log.error("Category not found with ID: {}", categoryId);
+                    return new NotFoundException(Category.class, "Category id " + categoryId + " not found.");
+                });
     }
 
     @Override
     public Event getEventOrNotFound(Long eventId) {
-
-        Optional<Event> event = eventRepository.findById(eventId);
-
-        if (event.isEmpty()) {
-            throw new NotFoundException(Event.class, "Event id " + eventId + " not found.");
-        } else {
-            return event.get();
-        }
+        return eventRepository.findById(eventId)
+                .orElseThrow(() -> {
+                    log.error("Event not found with ID: {}", eventId);
+                    return new NotFoundException(Event.class, "Event id " + eventId + " not found.");
+                });
     }
 
     @Override
     public Request getRequestOrNotFound(Long requestId) {
-
-        Optional<Request> request = requestRepository.findById(requestId);
-
-        if (request.isEmpty()) {
-            throw new NotFoundException(Request.class, "Request id " + requestId + " not found.");
-        } else {
-            return request.get();
-        }
+        return requestRepository.findById(requestId)
+                .orElseThrow(() -> {
+                    log.error("Request not found with ID: {}", requestId);
+                    return new NotFoundException(Request.class, "Request id " + requestId + " not found.");
+                });
     }
 
     @Override
     public Compilation getCompilationOrNotFound(Long compId) {
-
-        Optional<Compilation> compilation = compilationRepository.findById(compId);
-
-        if (compilation.isEmpty()) {
-            throw new NotFoundException(Compilation.class, "Compilation id " + compId + " not found.");
-        } else {
-            return compilation.get();
-        }
+        return compilationRepository.findById(compId)
+                .orElseThrow(() -> {
+                    log.error("Compilation not found with ID: {}", compId);
+                    return new NotFoundException(Compilation.class, "Compilation id " + compId + " not found.");
+                });
     }
 
     @Override
     public LocalDateTime parseDate(String date) {
         if (date != null) {
-            return LocalDateTime.parse(date, DATE_TIME_FORMATTER);
+            try {
+                return LocalDateTime.parse(date, DATE_TIME_FORMATTER);
+            } catch (Exception e) {
+                log.error("Error parsing date: {}", date, e);
+                return null;
+            }
         } else {
             return null;
         }

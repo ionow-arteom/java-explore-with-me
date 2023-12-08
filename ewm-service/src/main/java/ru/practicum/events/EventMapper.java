@@ -41,7 +41,7 @@ public class EventMapper {
     public EventFull toEventFullDto(Event event) {
         EventFull eventFullDto = EventFull.builder()
                 .annotation(event.getAnnotation())
-                .category(CategoryMapper.returnCategoryDto(event.getCategory()))
+                .category(CategoryMapper.toDto(event.getCategory()))
                 .confirmedRequests(event.getConfirmedRequests())
                 .createdOn(event.getCreatedOn())
                 .description(event.getDescription())
@@ -63,7 +63,7 @@ public class EventMapper {
     public EventShort toEventShortDto(Event event) {
         return EventShort.builder()
                 .annotation(event.getAnnotation())
-                .category(CategoryMapper.returnCategoryDto(event.getCategory()))
+                .category(CategoryMapper.toDto(event.getCategory()))
                 .confirmedRequests(event.getConfirmedRequests())
                 .eventDate(event.getEventDate())
                 .id(event.getId())

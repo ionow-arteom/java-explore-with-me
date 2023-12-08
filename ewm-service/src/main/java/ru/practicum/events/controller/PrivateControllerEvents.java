@@ -23,58 +23,47 @@ public class PrivateControllerEvents {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EventFull addEvent(@Valid @RequestBody EventNew eventNew,
-                              @PathVariable Long userId) {
-
-        log.info("User with ID {} is adding an event with annotation: {}", userId, eventNew.getAnnotation());
+    public EventFull createEvent(@Valid @RequestBody EventNew eventNew,
+                                 @PathVariable Long userId) {
+        log.info("Creating event for User ID {}: {}", userId, eventNew.getAnnotation());
         return eventService.addEvent(userId, eventNew);
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<EventShort> getAllEventsByUserId(@PathVariable Long userId,
-                                                 @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
-                                                 @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
-
-        log.info("Fetching events for User with ID {}. Pagination details: from={}, size={}", userId, from, size);
+    public List<EventShort> listEventsByUser(@PathVariable Long userId,
+                                             @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
+                                             @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
+        log.info("Listing events for User ID {}. From: {}, Size: {}", userId, from, size);
         return eventService.getAllEventsByUserId(userId, from, size);
     }
 
     @GetMapping("/{eventId}")
-    @ResponseStatus(HttpStatus.OK)
-    public EventFull getUserEventById(@PathVariable Long userId,
-                                      @PathVariable Long eventId) {
-
-        log.info("Fetching Event with ID {} for User with ID {}", eventId, userId);
+    public EventFull getEventDetails(@PathVariable Long userId,
+                                     @PathVariable Long eventId) {
+        log.info("Retrieving details for Event ID {} by User ID {}", eventId, userId);
         return eventService.getUserEventById(userId, eventId);
     }
 
     @PatchMapping("/{eventId}")
-    @ResponseStatus(HttpStatus.OK)
-    public EventFull updateEventByUserId(@RequestBody @Valid EventUpdate eventUpdate,
-                                         @PathVariable Long userId,
-                                         @PathVariable Long eventId) {
-
-        log.info("User with ID {} is updating Event with ID {}. Annotation: {}", userId, eventId, eventUpdate.getAnnotation());
+    public EventFull updateEvent(@Valid @RequestBody EventUpdate eventUpdate,
+                                 @PathVariable Long userId,
+                                 @PathVariable Long eventId) {
+        log.info("Updating event ID {} by User ID {}. Annotation: {}", eventId, userId, eventUpdate.getAnnotation());
         return eventService.updateEventByUserId(eventUpdate, userId, eventId);
     }
 
     @GetMapping("/{eventId}/requests")
-    @ResponseStatus(HttpStatus.OK)
-    public List<RequestDto> getRequestsForEventIdByUserId(@PathVariable Long userId,
-                                                          @PathVariable Long eventId) {
-
-        log.info("Fetching all requests for Event with ID {} by User with ID {}", eventId, userId);
+    public List<RequestDto> listEventRequests(@PathVariable Long userId,
+                                              @PathVariable Long eventId) {
+        log.info("Listing requests for Event ID {} by User ID {}", eventId, userId);
         return eventService.getRequestsForEventIdByUserId(userId, eventId);
     }
 
     @PatchMapping("/{eventId}/requests")
-    @ResponseStatus(HttpStatus.OK)
-    public RequestUpdateResult updateStatusRequestsForEventIdByUserId(@PathVariable Long userId,
-                                                                      @PathVariable Long eventId,
-                                                                      @RequestBody RequestUpdate requestDto) {
-
-        log.info("Updating status request for Event with ID {} by User with ID {}", eventId, userId);
-        return eventService.updateStatusRequestsForEventIdByUserId(requestDto, userId, eventId);
+    public RequestUpdateResult modifyEventRequests(@PathVariable Long userId,
+                                                   @PathVariable Long eventId,
+                                                   @Valid @RequestBody RequestUpdate requestUpdate) {
+        log.info("Modifying requests for Event ID {} by User ID {}", eventId, userId);
+        return eventService.updateStatusRequestsForEventIdByUserId(requestUpdate, userId, eventId);
     }
 }

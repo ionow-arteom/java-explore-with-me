@@ -1,6 +1,6 @@
 package ru.practicum.compilation;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -11,15 +11,16 @@ import ru.practicum.compilation.dto.CompilationUpdateDto;
 import ru.practicum.events.EventRepository;
 import ru.practicum.util.UnionService;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Slf4j
 @Service
 @Transactional(readOnly = true)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CompilationServiceImpl implements CompilationService {
 
     private final CompilationRepository compilationRepository;
@@ -47,27 +48,22 @@ public class CompilationServiceImpl implements CompilationService {
     @Transactional
     public CompilationDto update(Long compId, CompilationUpdateDto compilationUpdateDto) {
         Compilation compilation = unionService.getCompilationOrNotFound(compId);
-        setCompilationDefaults(compilation, compilationUpdateDto.getEvents());
-        if (compilationUpdateDto.getTitle() != null) {
-            compilation.setTitle(compilationUpdateDto.getTitle());
-        }
+        updateCompilationDetails(compilation, compilationUpdateDto);
         log.info("Updating compilation with ID: {}", compId);
         return CompilationMapper.returnCompilationDto(compilationRepository.save(compilation));
     }
 
     @Override
     public List<CompilationDto> getList(Boolean pinned, Integer from, Integer size) {
-
-        log.info("ЗНАЧЕНИЕ FROM: {}", from);
+        log.info("Fetching compilations, pinned: {}, from: {}, size: {}", pinned, from, size);
         PageRequest pageRequest = PageRequest.of(from / size, size);
-        List<Compilation> compilations;
-        log.info("ЗНАЧЕНИЕ FROM: {} getlist", from);
-        if (pinned) {
-            compilations = compilationRepository.findByPinned(pinned, pageRequest);
-        } else {
-            compilations = compilationRepository.findAll(pageRequest).getContent();;
-        }
-        return new ArrayList<>(CompilationMapper.returnCompilationDtoSet(compilations));
+        Iterable<Compilation> compilations = (pinned != null && pinned) ?
+                compilationRepository.findByPinned(true, pageRequest) :
+                compilationRepository.findAll(pageRequest);
+
+        return StreamSupport.stream(compilations.spliterator(), false)
+                .map(CompilationMapper::returnCompilationDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -78,11 +74,16 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     private void setCompilationDefaults(Compilation compilation, Set<Long> eventIds) {
-        if (compilation.getPinned() == null) {
-            compilation.setPinned(false);
-        }
+        compilation.setPinned(compilation.getPinned() != null && compilation.getPinned());
         compilation.setEvents(eventIds == null || eventIds.isEmpty() ?
                 Collections.emptySet() :
                 eventRepository.findByIdIn(eventIds));
+    }
+
+    private void updateCompilationDetails(Compilation compilation, CompilationUpdateDto compilationUpdateDto) {
+        if (compilationUpdateDto.getTitle() != null) {
+            compilation.setTitle(compilationUpdateDto.getTitle());
+        }
+        setCompilationDefaults(compilation, compilationUpdateDto.getEvents());
     }
 }

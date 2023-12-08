@@ -35,8 +35,8 @@ public class PublicControllerEvents {
                                               HttpServletRequest request) {
         String uri = getUriFromRequest(request);
         String ip = getIpFromRequest(request);
-        log.info("Fetching public events with parameters: text={}, categories={}, paid={}, rangeStart={}, rangeEnd={}, onlyAvailable={}, sort={}, from={}, size={}",
-                text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
+        log.info("Fetching public events (URI: {}, IP: {}) with params: text={}, categories={}, paid={}, rangeStart={}, rangeEnd={}, onlyAvailable={}, sort={}, from={}, size={}",
+                uri, ip, text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
         return eventService.getEventsByPublic(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size, uri, ip);
     }
 
@@ -45,7 +45,7 @@ public class PublicControllerEvents {
     public EventFull getEventById(@PathVariable Long id, HttpServletRequest request) {
         String uri = getUriFromRequest(request);
         String ip = getIpFromRequest(request);
-        log.info("Fetching Event with ID {}", id);
+        log.info("Fetching details for Event ID {} (URI: {}, IP: {})", id, uri, ip);
         return eventService.getEventById(id, uri, ip);
     }
 

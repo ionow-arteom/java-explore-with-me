@@ -8,7 +8,7 @@ import java.util.List;
 
 @UtilityClass
 public class CategoryMapper {
-    public CategoryDto returnCategoryDto(Category category) {
+    public CategoryDto toDto(Category category) {
         CategoryDto categoryDto = CategoryDto.builder()
                 .id(category.getId())
                 .name(category.getName())
@@ -16,7 +16,7 @@ public class CategoryMapper {
         return categoryDto;
     }
 
-    public Category returnCategory(CategoryDto categoryDto) {
+    public Category fromDto(CategoryDto categoryDto) {
         Category category = Category.builder()
                 .id(categoryDto.getId())
                 .name(categoryDto.getName())
@@ -24,13 +24,12 @@ public class CategoryMapper {
         return category;
     }
 
-    public List<CategoryDto> returnCategoryDtoList(Iterable<Category> categories) {
+    public List<CategoryDto> toDtoList(Iterable<Category> categories) {
         List<CategoryDto> result = new ArrayList<>();
 
         for (Category category : categories) {
-            result.add(returnCategoryDto(category));
+            result.add(toDto(category));
         }
         return result;
     }
 }
-

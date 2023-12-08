@@ -64,15 +64,4 @@ public class ErrorHandler {
     public ErrorResponse handleConflictException(final ConflictException e) {
         return new ErrorResponse(e.getMessage());
     }
-
-//    /**
-//     * Handles general exceptions to catch all that are not specifically managed.
-//     * @param e Exception to be handled.
-//     * @return ErrorResponse containing the error message.
-//     */
-//    @ExceptionHandler
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    public ErrorResponse handleGeneralException(final Exception e) {
-//        return new ErrorResponse("An unexpected error occurred.");
-//    }
 }

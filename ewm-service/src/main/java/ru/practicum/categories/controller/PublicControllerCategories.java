@@ -2,7 +2,6 @@ package ru.practicum.categories.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.categories.dto.CategoryDto;
 import ru.practicum.categories.CategoryService;
@@ -20,20 +19,19 @@ public class PublicControllerCategories {
     private final CategoryService categoryService;
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<CategoryDto> getCategories(@PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
-                                           @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
-
-        log.info("List Categories, where: from = {}, size = {}", from, size);
-        return categoryService.getList(from, size);
+    public List<CategoryDto> listCategories(@PositiveOrZero @RequestParam(defaultValue = "0") Integer offset,
+                                            @Positive @RequestParam(defaultValue = "10") Integer limit) {
+        log.info("Fetching categories with offset {} and limit {}", offset, limit);
+        List<CategoryDto> categories = categoryService.getList(offset, limit);
+        log.debug("Fetched {} categories starting from position {}", categories.size(), offset);
+        return categories;
     }
 
     @GetMapping("/{catId}")
-    @ResponseStatus(HttpStatus.OK)
-    public CategoryDto getCategory(@PathVariable("catId") Long categoryId) {
-
-        log.info("Get Category id {}", categoryId);
-        return categoryService.getById(categoryId);
+    public CategoryDto getCategoryDetails(@PathVariable Long catId) {
+        log.info("Requesting details for category with ID: {}", catId);
+        CategoryDto category = categoryService.getById(catId);
+        log.debug("Retrieved details for category: {}", category.getName());
+        return category;
     }
 }
-

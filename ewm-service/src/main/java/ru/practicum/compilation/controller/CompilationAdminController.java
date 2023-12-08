@@ -21,23 +21,28 @@ public class CompilationAdminController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CompilationDto addCompilation(@Valid @RequestBody CompilationNewDto compilationNewDto) {
-        log.info("Adding Compilation with title: {}", compilationNewDto.getTitle());
-        return compilationService.add(compilationNewDto);
+    public CompilationDto createCompilation(@Valid @RequestBody CompilationNewDto newCompilation) {
+        log.info("Request to create a new compilation: {}", newCompilation.getTitle());
+        CompilationDto createdCompilation = compilationService.add(newCompilation);
+        log.info("Created new compilation with ID: {}", createdCompilation.getId());
+        return createdCompilation;
     }
 
     @DeleteMapping("/{compId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCompilation(@PathVariable Long compId) {
-        log.info("Deleting Compilation with ID: {}", compId);
+    public void removeCompilation(@PathVariable Long compId) {
+        log.info("Request to delete compilation with ID: {}", compId);
         compilationService.delete(compId);
+        log.info("Deleted compilation with ID: {}", compId);
     }
 
     @PatchMapping("/{compId}")
     @ResponseStatus(HttpStatus.OK)
-    public CompilationDto updateCompilation(@Valid @RequestBody CompilationUpdateDto compilationUpdateDto,
-                                            @PathVariable Long compId) {
-        log.info("Updating Compilation with ID: {}", compId);
-        return compilationService.update(compId, compilationUpdateDto);
+    public CompilationDto editCompilation(@PathVariable Long compId,
+                                          @Valid @RequestBody CompilationUpdateDto updateCompilation) {
+        log.info("Request to update compilation with ID: {}", compId);
+        CompilationDto updatedCompilation = compilationService.update(compId, updateCompilation);
+        log.info("Updated compilation with ID: {}", compId);
+        return updatedCompilation;
     }
 }

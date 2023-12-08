@@ -23,25 +23,31 @@ public class AdminControllerEvents {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<EventFull> getEventsByAdmin(@RequestParam(required = false, name = "users") List<Long> users,
-                                            @RequestParam(required = false, name = "states") List<String> states,
-                                            @RequestParam(required = false, name = "categories") List<Long> categories,
-                                            @RequestParam(required = false, name = "rangeStart") String rangeStart,
-                                            @RequestParam(required = false, name = "rangeEnd") String rangeEnd,
-                                            @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
-                                            @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        log.info("Admin is fetching events with parameters: users={}, states={}, categories={}, rangeStart={}, rangeEnd={}, from={}, size={}",
+    public List<EventFull> fetchEvents(
+            @RequestParam(required = false) List<Long> users,
+            @RequestParam(required = false) List<String> states,
+            @RequestParam(required = false) List<Long> categories,
+            @RequestParam(required = false) String rangeStart,
+            @RequestParam(required = false) String rangeEnd,
+            @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+            @Positive @RequestParam(defaultValue = "10") Integer size) {
+
+        log.info("Admin requesting events: users={}, states={}, categories={}, rangeStart={}, rangeEnd={}, from={}, size={}",
                 users, states, categories, rangeStart, rangeEnd, from, size);
-        return eventService.getEventsByAdmin(users, states, categories, rangeStart, rangeEnd, from, size);
+        List<EventFull> events = eventService.getEventsByAdmin(users, states, categories, rangeStart, rangeEnd, from, size);
+        log.info("Retrieved {} events for admin", events.size());
+        return events;
     }
 
     @PatchMapping("/{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public EventFull updateEventByAdmin(
+    public EventFull modifyEvent(
             @Valid @RequestBody EventUpdate eventUpdate,
             @PathVariable Long eventId) {
 
-        log.info("Admin is updating Event with ID: {}", eventId);
-        return eventService.updateEventByAdmin(eventUpdate, eventId);
+        log.info("Admin updating event with ID: {}", eventId);
+        EventFull updatedEvent = eventService.updateEventByAdmin(eventUpdate, eventId);
+        log.info("Event with ID: {} updated successfully", eventId);
+        return updatedEvent;
     }
 }

@@ -23,8 +23,10 @@ public class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto addUser(@Valid @RequestBody UserDto userDto) {
-        log.info("Attempting to add user: {}", userDto.getName());
-        return userService.addUser(userDto);
+        log.info("Adding new user: {}", userDto.getName());
+        UserDto newUser = userService.addUser(userDto);
+        log.info("User added successfully: {}", newUser.getId());
+        return newUser;
     }
 
     @GetMapping
@@ -34,14 +36,17 @@ public class UserController {
             @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero Integer from,
             @RequestParam(name = "size", defaultValue = "10") @Positive Integer size) {
 
-        log.info("Fetching users with ids: {}. Pagination: start = {}, size = {}", ids, from, size);
-        return userService.getUsers(ids, from, size);
+        log.info("Request to fetch users. IDs: {}, Page: {}, Size: {}", ids, from, size);
+        List<UserDto> users = userService.getUsers(ids, from, size);
+        log.info("Fetched {} users", users.size());
+        return users;
     }
 
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable("userId") @Positive Long userId) {
-        log.info("Deleting user with ID: {}", userId);
+        log.info("Request to delete user with ID: {}", userId);
         userService.deleteUser(userId);
+        log.info("User with ID: {} deleted successfully", userId);
     }
 }

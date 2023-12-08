@@ -30,39 +30,71 @@ public class RequestServiceImpl implements RequestService {
     public RequestDto addRequest(Long userId, Long eventId) {
         User user = unionService.getUserOrNotFound(userId);
         Event event = unionService.getEventOrNotFound(eventId);
-        if (event.getParticipantLimit() <= event.getConfirmedRequests() && event.getParticipantLimit() != 0) {
-            throw new ConflictException(String.format("Event %s requests exceed the limit", event));
+
+        validateRequest(user, event);
+
+        Request request = createNewRequest(user, event);
+        request = requestRepository.save(request);
+
+        if (isAutoConfirmEnabled(event)) {
+            confirmRequest(event, request);
         }
-        if (event.getInitiator().getId().equals(userId)) {
-            throw new ConflictException(String.format("Initiator, user id %s cannot give a request to participate in his event", user.getId()));
+
+        log.info("Request added with ID: {}", request.getId());
+        return RequestMapper.mapToRequestDto(request);
+    }
+
+    private void validateRequest(User user, Event event) {
+        if (isRequestLimitExceeded(event)) {
+            throw new ConflictException(String.format("Event %s is already at full capacity.", event.getTitle()));
         }
-        if (requestRepository.findByRequesterIdAndEventId(userId, eventId).isPresent()) {
-            throw new ConflictException(String.format("You have already applied to participate in Event %s", event.getTitle()));
+        if (isUserEventInitiator(user, event)) {
+            throw new ConflictException("Event initiators cannot participate in their own events.");
+        }
+        if (isDuplicateRequest(user, event)) {
+            throw new ConflictException("You have already applied to this event.");
         }
         if (event.getState() != State.PUBLISHED) {
-            throw new ConflictException(String.format("Event %s has not been published, you cannot request participation", eventId));
+            throw new ConflictException("This event is not yet published.");
         }
-        Request request = Request.builder()
+    }
+
+    private boolean isRequestLimitExceeded(Event event) {
+        return event.getParticipantLimit() <= event.getConfirmedRequests() && event.getParticipantLimit() != 0;
+    }
+
+    private boolean isUserEventInitiator(User user, Event event) {
+        return event.getInitiator().getId().equals(user.getId());
+    }
+
+    private boolean isDuplicateRequest(User user, Event event) {
+        return requestRepository.findByRequesterIdAndEventId(user.getId(), event.getId()).isPresent();
+    }
+
+    private Request createNewRequest(User user, Event event) {
+        return Request.builder()
                 .requester(user)
                 .event(event)
                 .created(LocalDateTime.now())
                 .status(Status.PENDING)
                 .build();
-        if (!event.getRequestModeration() || event.getParticipantLimit() == 0) {
-            request.setStatus(Status.CONFIRMED);
-            request = requestRepository.save(request);
-            event.setConfirmedRequests(requestRepository.countAllByEventIdAndStatus(eventId, Status.CONFIRMED));
-            eventRepository.save(event);
-        } else {
-            request = requestRepository.save(request);
-        }
-        return RequestMapper.mapToRequestDto(request);
+    }
+
+    private boolean isAutoConfirmEnabled(Event event) {
+        return !event.getRequestModeration() || event.getParticipantLimit() == 0;
+    }
+
+    private void confirmRequest(Event event, Request request) {
+        request.setStatus(Status.CONFIRMED);
+        event.setConfirmedRequests(requestRepository.countAllByEventIdAndStatus(event.getId(), Status.CONFIRMED));
+        eventRepository.save(event);
     }
 
     @Override
     public List<RequestDto> getRequestsByUserId(Long userId) {
         unionService.getUserOrNotFound(userId);
         List<Request> requestList = requestRepository.findAllByRequesterId(userId);
+        log.info("Retrieved {} requests for user ID: {}", requestList.size(), userId);
         return RequestMapper.mapToRequestDtoList(requestList);
     }
 
@@ -72,6 +104,7 @@ public class RequestServiceImpl implements RequestService {
         unionService.getUserOrNotFound(userId);
         Request request = unionService.getRequestOrNotFound(requestId);
         request.setStatus(Status.CANCELED);
+        log.info("Request with ID: {} has been canceled", requestId);
         return RequestMapper.mapToRequestDto(requestRepository.save(request));
     }
 }
