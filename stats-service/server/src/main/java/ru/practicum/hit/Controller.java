@@ -29,20 +29,6 @@ public class Controller {
         service.add(hitDto);
     }
 
-//    @GetMapping("/stats")
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<StatsDto> retrieveStats(@RequestParam String start,
-//                                        @RequestParam String end,
-//                                        @RequestParam(required = false) List<String> uris,
-//                                        @RequestParam(required = false,defaultValue = "false") Boolean unique) {
-//
-//        LocalDateTime startTime = parseDateTime(start);
-//        LocalDateTime endTime = parseDateTime(end);
-//
-//        log.info("Received request to retrieve stats from {} to {}", startTime, endTime);
-//        return service.findStats(startTime, endTime, uris, unique);
-//    }
-
     @GetMapping("/stats")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<StatsDto>> retrieveStats(@RequestParam String start,

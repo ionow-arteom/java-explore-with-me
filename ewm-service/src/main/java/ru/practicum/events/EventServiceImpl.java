@@ -129,47 +129,59 @@ public class EventServiceImpl implements EventService {
         log.info("Updating request status for event with ID: {} by user with ID: {}", eventId, userId);
         User user = unionService.getUserOrNotFound(userId);
         Event event = unionService.getEventOrNotFound(eventId);
-        RequestUpdateResult result = RequestUpdateResult.builder()
-                .confirmedRequests(Collections.emptyList())
-                .rejectedRequests(Collections.emptyList())
-                .build();
-        if (!user.getId().equals(event.getInitiator().getId())) {
-            throw new ConflictException(String.format("User %s is not the initiator of the event %s.",userId, eventId));
-        }
-        if (!event.getRequestModeration() || event.getParticipantLimit() == 0) {
-            return result;
-        }
-        if (event.getConfirmedRequests() >= event.getParticipantLimit()) {
-            throw new ConflictException("Exceeded the limit of participants");
-        }
-        List<Request> confirmedRequests = new ArrayList<>();
-        List<Request> rejectedRequests = new ArrayList<>();
 
-        long vacantPlace = event.getParticipantLimit() - event.getConfirmedRequests();
+        validateRequestUpdateConditions(event, user);
         List<Request> requestsList = requestRepository.findAllById(requestDto.getRequestIds());
+        RequestUpdateResult result = processRequestUpdates(event, requestsList, requestDto, eventId);
 
-        for (Request request : requestsList) {
-            if (!request.getStatus().equals(Status.PENDING)) {
-                throw new ConflictException("Request must have status PENDING");
-            }
-            if (requestDto.getStatus().equals(Status.CONFIRMED) && vacantPlace > 0) {
-                request.setStatus(Status.CONFIRMED);
-                event.setConfirmedRequests(requestRepository.countAllByEventIdAndStatus(eventId, Status.CONFIRMED));
-                confirmedRequests.add(request);
-                vacantPlace--;
-            } else {
-                request.setStatus(Status.REJECTED);
-                rejectedRequests.add(request);
-            }
-        }
-        result.setConfirmedRequests(RequestMapper.mapToRequestDtoList(confirmedRequests));
-        result.setRejectedRequests(RequestMapper.mapToRequestDtoList(rejectedRequests));
         eventRepository.save(event);
         requestRepository.saveAll(requestsList);
+
         log.info("Updated request status with {} confirmed and {} rejected for event with ID: {} by user with ID: {}",
                 result.getConfirmedRequests().size(), result.getRejectedRequests().size(), eventId, userId);
 
         return result;
+    }
+
+    private void validateRequestUpdateConditions(Event event, User user) {
+        if (!user.getId().equals(event.getInitiator().getId())) {
+            throw new ConflictException(String.format("User %s is not the initiator of the event %s.", user.getId(), event.getId()));
+        }
+        if (!event.getRequestModeration() || event.getParticipantLimit() == 0) {
+            throw new ConflictException("Request moderation not enabled or participant limit is zero.");
+        }
+        if (event.getConfirmedRequests() >= event.getParticipantLimit()) {
+            throw new ConflictException("Exceeded the limit of participants.");
+        }
+    }
+
+    private RequestUpdateResult processRequestUpdates(Event event, List<Request> requestsList, RequestUpdate requestDto, Long eventId) {
+        long vacantPlaces = event.getParticipantLimit() - event.getConfirmedRequests();
+        List<RequestDto> confirmedRequests = new ArrayList<>();
+        List<RequestDto> rejectedRequests = new ArrayList<>();
+
+        for (Request request : requestsList) {
+            if (!request.getStatus().equals(Status.PENDING)) {
+                throw new ConflictException("Request must have status PENDING.");
+            }
+            if (requestDto.getStatus().equals(Status.CONFIRMED) && vacantPlaces > 0) {
+                request.setStatus(Status.CONFIRMED);
+                confirmedRequests.add(RequestMapper.mapToRequestDto(request));
+                vacantPlaces--;
+            } else {
+                request.setStatus(Status.REJECTED);
+                rejectedRequests.add(RequestMapper.mapToRequestDto(request));
+            }
+        }
+        event.setConfirmedRequests(event.getConfirmedRequests() + confirmedRequests.size());
+
+        log.debug("Processed {} requests: {} confirmed, {} rejected for event ID {}",
+                requestsList.size(), confirmedRequests.size(), rejectedRequests.size(), eventId);
+
+        return RequestUpdateResult.builder()
+                .confirmedRequests(confirmedRequests)
+                .rejectedRequests(rejectedRequests)
+                .build();
     }
 
     @Override
@@ -318,7 +330,6 @@ public class EventServiceImpl implements EventService {
     }
 
     private Long getViewsEventById(Long eventId) {
-
         String uri = "/events/" + eventId;
         ResponseEntity<Object> response = client.findStats(START_TIME, LocalDateTime.now(), uri, true);
         List<StatsDto> result = objectMapper.convertValue(response.getBody(), new TypeReference<>() {});
