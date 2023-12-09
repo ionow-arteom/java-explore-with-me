@@ -156,56 +156,101 @@ public class EventServiceImpl implements EventService {
     }
 
     private RequestUpdateResult processRequestUpdates(Event event, List<Request> requestsList, RequestUpdate requestDto, Long eventId) {
-        long vacantPlaces = event.getParticipantLimit() - event.getConfirmedRequests();
+        long vacantPlaces = calculateVacantPlaces(event);
         List<RequestDto> confirmedRequests = new ArrayList<>();
         List<RequestDto> rejectedRequests = new ArrayList<>();
 
         for (Request request : requestsList) {
-            if (!request.getStatus().equals(Status.PENDING)) {
-                throw new ConflictException("Request must have status PENDING.");
-            }
-            if (requestDto.getStatus().equals(Status.CONFIRMED) && vacantPlaces > 0) {
-                request.setStatus(Status.CONFIRMED);
-                confirmedRequests.add(RequestMapper.mapToRequestDto(request));
-                vacantPlaces--;
-            } else {
-                request.setStatus(Status.REJECTED);
-                rejectedRequests.add(RequestMapper.mapToRequestDto(request));
-            }
+            validateRequestStatus(request);
+            updateRequestStatus(request, requestDto.getStatus(), vacantPlaces, confirmedRequests, rejectedRequests);
         }
-        event.setConfirmedRequests(event.getConfirmedRequests() + confirmedRequests.size());
+
+        updateEventConfirmedRequests(event, confirmedRequests.size());
 
         log.debug("Processed {} requests: {} confirmed, {} rejected for event ID {}",
                 requestsList.size(), confirmedRequests.size(), rejectedRequests.size(), eventId);
 
+        return buildRequestUpdateResult(confirmedRequests, rejectedRequests);
+    }
+
+    private long calculateVacantPlaces(Event event) {
+        return event.getParticipantLimit() - event.getConfirmedRequests();
+    }
+
+    private void validateRequestStatus(Request request) {
+        if (!request.getStatus().equals(Status.PENDING)) {
+            throw new ConflictException("Request must have status PENDING.");
+        }
+    }
+
+    private void updateRequestStatus(Request request, Status newStatus, long vacantPlaces,
+                                     List<RequestDto> confirmedRequests, List<RequestDto> rejectedRequests) {
+        if (newStatus.equals(Status.CONFIRMED) && vacantPlaces > 0) {
+            request.setStatus(Status.CONFIRMED);
+            confirmedRequests.add(RequestMapper.mapToRequestDto(request));
+        } else {
+            request.setStatus(Status.REJECTED);
+            rejectedRequests.add(RequestMapper.mapToRequestDto(request));
+        }
+    }
+
+    private void updateEventConfirmedRequests(Event event, int newConfirmedCount) {
+        event.setConfirmedRequests(event.getConfirmedRequests() + newConfirmedCount);
+    }
+
+    private RequestUpdateResult buildRequestUpdateResult(List<RequestDto> confirmedRequests, List<RequestDto> rejectedRequests) {
         return RequestUpdateResult.builder()
                 .confirmedRequests(confirmedRequests)
                 .rejectedRequests(rejectedRequests)
                 .build();
     }
 
+
     @Override
     @Transactional
     public EventFull updateEventByAdmin(EventUpdate eventUpdate, Long eventId) {
         log.info("Admin updating event with ID: {}", eventId);
         Event event = unionService.getEventOrNotFound(eventId);
-        if (eventUpdate.getStateAction() != null) {
-            if (eventUpdate.getStateAction().equals(StateAction.PUBLISH_EVENT)) {
-                if (!event.getState().equals(State.PENDING)) {
-                    throw new ConflictException(String.format("Event - %s, has already been published, cannot be published again ", event.getTitle()));
-                }
-                event.setPublishedOn(LocalDateTime.now());
-                event.setState(PUBLISHED);
-            } else {
-                if (!event.getState().equals(State.PENDING)) {
-                    throw new ConflictException(String.format("Event - %s, cannot be canceled because its statute is not \"PENDING\"", event.getTitle()));
-                }
-                event.setState(State.CANCELED);
+
+        processStateAction(eventUpdate.getStateAction(), event);
+        Event updatedEvent = baseUpdateEvent(event, eventUpdate);
+
+        log.info("Admin successfully updated event with ID: {}. New State: {}", eventId, updatedEvent.getState());
+        return EventMapper.toEventFullDto(updatedEvent);
+    }
+
+    private void processStateAction(StateAction stateAction, Event event) {
+        if (stateAction != null) {
+            switch (stateAction) {
+                case PUBLISH_EVENT:
+                    validateAndPublishEvent(event);
+                    break;
+                case CANCEL_REVIEW:
+                case REJECT_EVENT:
+                    validateAndCancelEvent(event);
+                    break;
+                default:
+                    log.warn("Unhandled state action: {}", stateAction);
+                    break;
             }
         }
-        Event updateEvent = baseUpdateEvent(event, eventUpdate);
-        log.info("Admin successfully updated event with ID: {}", eventId);
-        return EventMapper.toEventFullDto(updateEvent);
+    }
+
+    private void validateAndPublishEvent(Event event) {
+        if (!event.getState().equals(State.PENDING)) {
+            throw new ConflictException(String.format("Event - %s, has already been published or cannot be published", event.getTitle()));
+        }
+        event.setPublishedOn(LocalDateTime.now());
+        event.setState(PUBLISHED);
+        log.info("Event {} set to PUBLISHED state", event.getId());
+    }
+
+    private void validateAndCancelEvent(Event event) {
+        if (!event.getState().equals(State.PENDING)) {
+            throw new ConflictException(String.format("Event - %s, cannot be canceled as it is not in 'PENDING' state", event.getTitle()));
+        }
+        event.setState(State.CANCELED);
+        log.info("Event {} set to CANCELED state", event.getId());
     }
 
     @Override
