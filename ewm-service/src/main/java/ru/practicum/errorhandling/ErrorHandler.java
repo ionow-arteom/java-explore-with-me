@@ -74,6 +74,20 @@ public class ErrorHandler {
         return new ErrorResponse(e.getMessage());
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleAlreadySubscribedException(final AlreadySubscribedException e) {
+        logError(e);
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleSubscriptionNotFoundException(final SubscriptionNotFoundException e) {
+        logError(e);
+        return new ErrorResponse(e.getMessage());
+    }
+
     /**
      * Logs the error message and stack trace.
      * @param e Exception to be logged.
