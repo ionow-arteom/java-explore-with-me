@@ -3,21 +3,22 @@ package ru.practicum.hit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.HitDto;
 import ru.practicum.dto.StatsDto;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
+
+import static ru.practicum.dto.utilities.Constants.DATE_TIME_FORMATTER;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class Controller {
-
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private final HitService service;
 
@@ -29,16 +30,25 @@ public class Controller {
     }
 
     @GetMapping("/stats")
-    public List<StatsDto> retrieveStats(@RequestParam String start,
-                                        @RequestParam String end,
-                                        @RequestParam(required = false) List<String> uris,
-                                        @RequestParam(defaultValue = "false") Boolean unique) {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<StatsDto>> retrieveStats(@RequestParam String start,
+                                                        @RequestParam String end,
+                                                        @RequestParam(required = false) List<String> uris,
+                                                        @RequestParam(required = false, defaultValue = "false") Boolean unique) {
+        try {
+            LocalDateTime startTime = parseDateTime(start);
+            LocalDateTime endTime = parseDateTime(end);
 
-        LocalDateTime startTime = parseDateTime(start);
-        LocalDateTime endTime = parseDateTime(end);
+            if (endTime.isBefore(startTime)) {
+                return ResponseEntity.badRequest().build();
+            }
 
-        log.info("Received request to retrieve stats from {} to {}", startTime, endTime);
-        return service.findStats(startTime, endTime, uris, unique);
+            log.info("Received request to retrieve stats from {} to {}", startTime, endTime);
+            List<StatsDto> stats = service.findStats(startTime, endTime, uris, unique);
+            return ResponseEntity.ok(stats);
+        } catch (DateTimeParseException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     private LocalDateTime parseDateTime(String dateTime) {

@@ -4,8 +4,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+
+import static ru.practicum.dto.utilities.Constants.TIME_ORDER;
 
 @Data
 @Builder
@@ -24,6 +29,7 @@ public class HitDto {
     @NotBlank(message = "ip should not be blank")
     private String ip;
 
-    @NotBlank(message = "timestamp should not be blank")
-    private String timestamp;
+    @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = TIME_ORDER)
+    LocalDateTime timestamp;
 }
