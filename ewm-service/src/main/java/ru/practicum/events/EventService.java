@@ -41,6 +41,8 @@ public interface EventService {
      */
     EventFull updateEventByUserId(EventUpdate eventUpdateDto, Long userId, Long eventId);
 
+    List<EventShort> getEventsFromSubscribedUsers(Long userId, int from, int size);
+
     /**
      * Update the details of an event by an admin.
      * @param eventUpdateDto The details for the event update.
