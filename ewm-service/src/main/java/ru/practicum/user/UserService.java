@@ -19,6 +19,8 @@ public interface UserService {
      */
     void deleteUser(long id);
 
+    void setAllowSubscriptions(Long userId, boolean allow);
+
     /**
      * Retrieves a list of users based on given criteria
      * @param userIds list of user ids to filter. Can be null for no filtering.

@@ -3,6 +3,7 @@ package ru.practicum.user.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.user.dto.UserDto;
 import ru.practicum.user.UserService;
@@ -48,5 +49,11 @@ public class UserController {
         log.info("Request to delete user with ID: {}", userId);
         userService.deleteUser(userId);
         log.info("User with ID: {} deleted successfully", userId);
+    }
+
+    @PatchMapping("/{userId}/allow-subscriptions")
+    public ResponseEntity<?> setAllowSubscriptions(@PathVariable Long userId, @RequestParam boolean allow) {
+        userService.setAllowSubscriptions(userId, allow);
+        return ResponseEntity.ok().build();
     }
 }
