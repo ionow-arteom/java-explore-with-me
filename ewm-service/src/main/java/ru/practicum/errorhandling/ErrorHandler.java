@@ -73,16 +73,4 @@ public class ErrorHandler {
         LOGGER.error("ConflictException: {}", e.getMessage());
         return new ErrorResponse(e.getMessage());
     }
-
-    /**
-     * Handles unhandled exceptions.
-     * @param e Exception to be handled.
-     * @return ErrorResponse containing the error message.
-     */
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleUnhandledException(final Exception e) {
-        LOGGER.error("Unhandled Exception: {}", e.getMessage(), e);
-        return new ErrorResponse("Internal Server Error");
-    }
 }
