@@ -88,6 +88,13 @@ public class ErrorHandler {
         return new ErrorResponse(e.getMessage());
     }
 
+    @ExceptionHandler(SubscriptionNotAllowedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleSubscriptionNotAllowedException(final SubscriptionNotAllowedException e) {
+        logError(e);
+        return new ErrorResponse(e.getMessage());
+    }
+
     /**
      * Logs the error message and stack trace.
      * @param e Exception to be logged.
