@@ -22,7 +22,7 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(final NotFoundException e) {
-        LOGGER.error("NotFoundException: {}", e.getMessage());
+        logError(e);
         return new ErrorResponse(e.getMessage());
     }
 
@@ -34,7 +34,7 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidationException(final ValidationException e) {
-        LOGGER.error("ValidationException: {}", e.getMessage());
+        logError(e);
         return new ErrorResponse(e.getMessage());
     }
 
@@ -46,7 +46,7 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleMethodArgumentNotValid(final MethodArgumentNotValidException e) {
-        LOGGER.error("MethodArgumentNotValidException: {}", e.getMessage());
+        logError(e);
         return new ErrorResponse(e.getMessage());
     }
 
@@ -58,7 +58,7 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleConstraintViolation(final ConstraintViolationException e) {
-        LOGGER.error("ConstraintViolationException: {}", e.getMessage());
+        logError(e);
         return new ErrorResponse(e.getMessage());
     }
 
@@ -70,7 +70,15 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleConflictException(final ConflictException e) {
-        LOGGER.error("ConflictException: {}", e.getMessage());
+        logError(e);
         return new ErrorResponse(e.getMessage());
+    }
+
+    /**
+     * Logs the error message and stack trace.
+     * @param e Exception to be logged.
+     */
+    private void logError(Exception e) {
+        LOGGER.error("Error occurred: {}", e.getMessage(), e);
     }
 }
