@@ -11,14 +11,6 @@ import java.util.stream.StreamSupport;
 @UtilityClass
 public class UserMapper {
 
-//    public UserDto toUserDto(User user) {
-//        return UserDto.builder()
-//                .id(user.getId())
-//                .email(user.getEmail())
-//                .name(user.getName())
-//                .build();
-//    }
-
     public UserDto toUserDto(User user) {
         return UserDto.builder()
                 .id(user.getId())
@@ -34,14 +26,6 @@ public class UserMapper {
                 .name(user.getName())
                 .build();
     }
-
-//    public User toUser(UserDto userDto) {
-//        return User.builder()
-//                .id(userDto.getId())
-//                .email(userDto.getEmail())
-//                .name(userDto.getName())
-//                .build();
-//    }
 
     public User toUser(UserDto userDto) {
         User user = User.builder()
