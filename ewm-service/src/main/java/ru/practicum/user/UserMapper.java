@@ -11,11 +11,20 @@ import java.util.stream.StreamSupport;
 @UtilityClass
 public class UserMapper {
 
+//    public UserDto toUserDto(User user) {
+//        return UserDto.builder()
+//                .id(user.getId())
+//                .email(user.getEmail())
+//                .name(user.getName())
+//                .build();
+//    }
+
     public UserDto toUserDto(User user) {
         return UserDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())
                 .name(user.getName())
+                .allowSubscriptions(user.isAllowSubscriptions())
                 .build();
     }
 
@@ -26,12 +35,22 @@ public class UserMapper {
                 .build();
     }
 
+//    public User toUser(UserDto userDto) {
+//        return User.builder()
+//                .id(userDto.getId())
+//                .email(userDto.getEmail())
+//                .name(userDto.getName())
+//                .build();
+//    }
+
     public User toUser(UserDto userDto) {
-        return User.builder()
+        User user = User.builder()
                 .id(userDto.getId())
                 .email(userDto.getEmail())
                 .name(userDto.getName())
+                .allowSubscriptions(userDto.isAllowSubscriptions())
                 .build();
+        return user;
     }
 
     public List<UserDto> toUserDtoList(Iterable<User> users) {

@@ -1,4 +1,4 @@
-package ru.practicum.subscription;
+package ru.practicum.subscription.dto;
 
 import lombok.*;
 

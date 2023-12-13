@@ -26,7 +26,7 @@ class UserDtoTest {
     @Test
     @DisplayName("UserDto Validation: Should Pass for Valid Data")
     void whenValidUserDto_thenNoConstraintViolations() {
-        UserDto user = new UserDto(null, "John Doe", "john.doe@example.com");
+        UserDto user = new UserDto(null, "John Doe", "john.doe@example.com", true);
         Set<ConstraintViolation<UserDto>> violations = validator.validate(user);
         assertTrue(violations.isEmpty());
     }
@@ -34,7 +34,7 @@ class UserDtoTest {
     @Test
     @DisplayName("UserDto Validation: Should Fail for Blank Name")
     void whenBlankName_thenConstraintViolation() {
-        UserDto user = new UserDto(null, "", "john.doe@example.com");
+        UserDto user = new UserDto(null, "", "john.doe@example.com", true);
         Set<ConstraintViolation<UserDto>> violations = validator.validate(user);
         assertFalse(violations.isEmpty());
     }
@@ -42,7 +42,7 @@ class UserDtoTest {
     @Test
     @DisplayName("UserDto Validation: Should Fail for Invalid Email")
     void whenInvalidEmail_thenConstraintViolation() {
-        UserDto user = new UserDto(null, "John Doe", "invalid-email");
+        UserDto user = new UserDto(null, "John Doe", "invalid-email", true);
         Set<ConstraintViolation<UserDto>> violations = validator.validate(user);
         assertFalse(violations.isEmpty());
     }
@@ -50,7 +50,7 @@ class UserDtoTest {
     @Test
     @DisplayName("UserDto Validation: Should Fail for Too Short Name")
     void whenNameTooShort_thenConstraintViolation() {
-        UserDto user = new UserDto(null, "J", "john.doe@example.com");
+        UserDto user = new UserDto(null, "J", "john.doe@example.com", true);
         Set<ConstraintViolation<UserDto>> violations = validator.validate(user);
         assertFalse(violations.isEmpty());
     }

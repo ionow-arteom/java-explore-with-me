@@ -1,6 +1,8 @@
 package ru.practicum.user.dto;
 
 import lombok.*;
+
+import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -22,4 +24,6 @@ public class UserDto {
     @NotBlank(message = "Email field should not be blank or just whitespace.")
     @Size(min = 6, max = 254, message = "Email length should be between 6 and 254 characters.")
     private String email;
+
+    private boolean allowSubscriptions = true;
 }

@@ -1,6 +1,7 @@
 package ru.practicum.subscription;
 
 import org.springframework.stereotype.Component;
+import ru.practicum.subscription.dto.SubscriptionDto;
 
 @Component
 public class SubscriptionMapper {

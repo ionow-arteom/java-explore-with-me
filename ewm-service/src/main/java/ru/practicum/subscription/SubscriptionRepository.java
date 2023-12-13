@@ -7,6 +7,8 @@ import java.util.List;
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
     List<Subscription> findBySubscriberId(Long subscriberId);
 
+    List<Subscription> findBySubscribedToId(Long subscribedToId);
+
     boolean existsBySubscriberIdAndSubscribedToId(Long subscriberId, Long subscribedToId);
 
     void deleteBySubscriberIdAndSubscribedToId(Long subscriberId, Long subscribedToId);

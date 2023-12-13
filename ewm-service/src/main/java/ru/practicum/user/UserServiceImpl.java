@@ -47,13 +47,15 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
+    @Transactional
     public void setAllowSubscriptions(Long userId, boolean allow) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(User.class, "User id " + userId + " not found."));
+        log.info("Current subscription status for user ID {}: {}", userId, user.isAllowSubscriptions());
         user.setAllowSubscriptions(allow);
         userRepository.save(user);
+        log.info("Subscription status has been changed for user ID {}. New status: {}", userId, user.isAllowSubscriptions());
     }
-
 
     private PageRequest createPageRequest(Integer from, Integer size) {
         return PageRequest.of(from / size, size);
