@@ -51,11 +51,6 @@ public class UserController {
         log.info("User with ID: {} deleted successfully", userId);
     }
 
-//    @PatchMapping("/{userId}/allow-subscriptions")
-//    public ResponseEntity<?> setAllowSubscriptions(@PathVariable Long userId, @RequestParam boolean allow) {
-//        userService.setAllowSubscriptions(userId, allow);
-//        return ResponseEntity.ok().build();
-//    }
     @PatchMapping("/{userId}/allow-subscriptions")
     public ResponseEntity<String> setAllowSubscriptions(@PathVariable Long userId, @RequestParam boolean allow) {
         userService.setAllowSubscriptions(userId, allow);
