@@ -19,6 +19,11 @@ public interface UserService {
      */
     void deleteUser(long id);
 
+    /**
+     * Sets the subscription status for a user.
+     * @param userId unique identifier of the user.
+     * @param allow true to allow subscriptions, false to disallow.
+     */
     void setAllowSubscriptions(Long userId, boolean allow);
 
     /**

@@ -1,6 +1,6 @@
 # java-explore-with-me
 
-# https://github.com/ionow-arteom/java-explore-with-me/pull/5 Cсылка на пул-реквест, открытый из ветки feature_NAME в main
+# https://github.com/ionow-arteom/java-explore-with-me/pull/5  <- Cсылка на пул-реквест, открытый из ветки feature_NAME в main
 
 # Афиша
 
