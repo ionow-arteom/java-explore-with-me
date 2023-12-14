@@ -40,11 +40,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public void unsubscribe(Long subscriberId, Long subscribedToId) {
+    public String unsubscribe(Long subscriberId, Long subscribedToId) {
         if (!subscriptionRepository.existsBySubscriberIdAndSubscribedToId(subscriberId, subscribedToId)) {
             throw new SubscriptionNotFoundException("Subscription not found for user " + subscriberId + " to user " + subscribedToId);
         }
         subscriptionRepository.deleteBySubscriberIdAndSubscribedToId(subscriberId, subscribedToId);
+        return "User " + subscriberId + " successfully unsubscribed from user " + subscribedToId;
     }
 
     @Override

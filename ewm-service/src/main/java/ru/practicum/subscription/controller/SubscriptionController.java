@@ -25,9 +25,9 @@ public class SubscriptionController {
 
     @Transactional
     @DeleteMapping
-    public ResponseEntity<?> unsubscribe(@PathVariable Long userId, @RequestParam Long subscribedToId) {
-        subscriptionService.unsubscribe(userId, subscribedToId);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> unsubscribe(@PathVariable Long userId, @RequestParam Long subscribedToId) {
+        String message = subscriptionService.unsubscribe(userId, subscribedToId);
+        return ResponseEntity.ok(message);
     }
 
     @GetMapping

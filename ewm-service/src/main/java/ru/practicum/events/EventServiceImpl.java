@@ -397,6 +397,10 @@ public class EventServiceImpl implements EventService {
                 .map(Subscription::getSubscribedToId)
                 .collect(Collectors.toList());
 
+        if (subscribedUserIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         PageRequest pageRequest = PageRequest.of(from / size, size, Sort.by("eventDate").descending());
 
         List<Event> events = eventRepository.findEventsByAdminFromParam(subscribedUserIds,

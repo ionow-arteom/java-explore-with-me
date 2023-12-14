@@ -51,9 +51,17 @@ public class UserController {
         log.info("User with ID: {} deleted successfully", userId);
     }
 
+//    @PatchMapping("/{userId}/allow-subscriptions")
+//    public ResponseEntity<?> setAllowSubscriptions(@PathVariable Long userId, @RequestParam boolean allow) {
+//        userService.setAllowSubscriptions(userId, allow);
+//        return ResponseEntity.ok().build();
+//    }
     @PatchMapping("/{userId}/allow-subscriptions")
-    public ResponseEntity<?> setAllowSubscriptions(@PathVariable Long userId, @RequestParam boolean allow) {
+    public ResponseEntity<String> setAllowSubscriptions(@PathVariable Long userId, @RequestParam boolean allow) {
         userService.setAllowSubscriptions(userId, allow);
-        return ResponseEntity.ok().build();
+
+        String statusMessage = allow ? "разрешена" : "запрещена";
+
+        return ResponseEntity.ok().body("Статус подписок успешно изменен. Новый статус: " + statusMessage);
     }
 }
