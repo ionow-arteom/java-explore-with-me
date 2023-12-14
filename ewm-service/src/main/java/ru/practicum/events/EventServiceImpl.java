@@ -389,28 +389,6 @@ public class EventServiceImpl implements EventService {
             return result.get(0).getHits();
         }
     }
-//    @Override
-//    public List<EventShort> getEventsFromSubscribedUsers(Long userId, int from, int size) {
-//        List<Long> subscribedUserIds = subscriptionRepository.findBySubscriberId(userId)
-//                .stream()
-//                .map(Subscription::getSubscribedToId)
-//                .collect(Collectors.toList());
-//
-//        if (subscribedUserIds.isEmpty()) {
-//            return Collections.emptyList();
-//        }
-//
-//        PageRequest pageRequest = PageRequest.of(from / size, size, Sort.by("eventDate").descending());
-//
-//        List<Event> events = eventRepository.findEventsByAdminFromParam(subscribedUserIds,
-//                List.of(State.PUBLISHED),
-//                null,
-//                LocalDateTime.now(),
-//                null,
-//                pageRequest);
-//
-//        return EventMapper.toEventShortDtoList(events);
-//    }
 
     @Override
     public List<EventShort> getEventsFromSubscribedUsers(Long userId, int from, int size) {
@@ -425,11 +403,9 @@ public class EventServiceImpl implements EventService {
 
         PageRequest pageRequest = PageRequest.of(from / size, size, Sort.by("eventDate").descending());
 
-        List<Event> events = eventRepository.findEventsByAdminFromParam(subscribedUserIds,
-                List.of(State.PUBLISHED),
-                null,
+        List<Event> events = eventRepository.findEventsBySubscribedUsers(subscribedUserIds,
+                State.PUBLISHED,
                 LocalDateTime.now(),
-                null,
                 pageRequest);
         return EventMapper.toEventShortDtoList(events);
     }
