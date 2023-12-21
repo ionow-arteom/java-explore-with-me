@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.errorhandling.NotFoundException;
 import ru.practicum.user.dto.UserDto;
 import ru.practicum.util.UnionService;
 
@@ -44,6 +45,16 @@ public class UserServiceImpl implements UserService {
 
         log.info("Fetched {} users", users.size());
         return users;
+    }
+
+    @Transactional
+    public void setAllowSubscriptions(Long userId, boolean allow) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(User.class, "User id " + userId + " not found."));
+        log.info("Current subscription status for user ID {}: {}", userId, user.isAllowSubscriptions());
+        user.setAllowSubscriptions(allow);
+        userRepository.save(user);
+        log.info("Subscription status has been changed for user ID {}. New status: {}", userId, user.isAllowSubscriptions());
     }
 
     private PageRequest createPageRequest(Integer from, Integer size) {

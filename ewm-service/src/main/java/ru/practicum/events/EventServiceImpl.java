@@ -3,6 +3,7 @@ package ru.practicum.events;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,8 @@ import ru.practicum.request.Request;
 import ru.practicum.request.RequestMapper;
 import ru.practicum.request.RequestRepository;
 import ru.practicum.request.dto.RequestDto;
+import ru.practicum.subscription.SubscriptionRepository;
+import ru.practicum.subscription.Subscription;
 import ru.practicum.user.User;
 import ru.practicum.util.enumerated.StateAction;
 import ru.practicum.util.enumerated.Status;
@@ -31,6 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static ru.practicum.dto.utilities.Constants.START_TIME;
 import static ru.practicum.util.enumerated.State.PUBLISHED;
@@ -45,6 +49,7 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final RequestRepository requestRepository;
     private final LocationRepository locationRepository;
+    private final SubscriptionRepository subscriptionRepository;
     private final StatsClient client;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -383,5 +388,25 @@ public class EventServiceImpl implements EventService {
         } else {
             return result.get(0).getHits();
         }
+    }
+
+    @Override
+    public List<EventShort> getEventsFromSubscribedUsers(Long userId, int from, int size) {
+        List<Subscription> subscriptions = subscriptionRepository.findBySubscriberId(userId);
+        if (subscriptions.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Long> subscribedUserIds = subscriptions.stream()
+                .map(Subscription::getSubscribedToId)
+                .collect(Collectors.toList());
+
+        PageRequest pageRequest = PageRequest.of(from / size, size, Sort.by("eventDate").descending());
+
+        List<Event> events = eventRepository.findEventsBySubscribedUsers(subscribedUserIds,
+                State.PUBLISHED,
+                LocalDateTime.now(),
+                pageRequest);
+        return EventMapper.toEventShortDtoList(events);
     }
 }

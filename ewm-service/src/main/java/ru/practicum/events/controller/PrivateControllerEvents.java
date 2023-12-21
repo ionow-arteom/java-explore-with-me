@@ -3,6 +3,7 @@ package ru.practicum.events.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.events.EventService;
 import ru.practicum.events.dto.*;
@@ -65,5 +66,22 @@ public class PrivateControllerEvents {
                                                    @Valid @RequestBody RequestUpdate requestUpdate) {
         log.info("Modifying requests for Event ID {} by User ID {}", eventId, userId);
         return eventService.updateStatusRequestsForEventIdByUserId(requestUpdate, userId, eventId);
+    }
+
+    @GetMapping("/subscribed-events")
+    public ResponseEntity<?> getEventsFromSubscribedUsers(
+            @PathVariable Long userId,
+            @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
+            @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
+
+        log.info("Listing events from subscriptions for User ID {}. From: {}, Size: {}", userId, from, size);
+        List<EventShort> eventShorts = eventService.getEventsFromSubscribedUsers(userId, from, size);
+
+        if (eventShorts.isEmpty()) {
+            return ResponseEntity.ok("К сожалению, пользователи на которых Вы подписаны, на данный момент не имеют" +
+                    " опубликованных актуальных событий =(");
+        } else {
+            return ResponseEntity.ok(eventShorts);
+        }
     }
 }

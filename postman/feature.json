@@ -1,0 +1,1391 @@
+{
+	"info": {
+		"_postman_id": "aee548b0-646b-4bfc-b725-adba573eb99c",
+		"name": "feature",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27383617"
+	},
+	"item": [
+		{
+			"name": "Add users",
+			"item": [
+				{
+					"name": "Добавление нового пользователя 1",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 Created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"User ID is returned\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.be.a('number');\r",
+									"    pm.environment.set(\"userId1\", jsonData.id);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"User One\",\r\n  \"email\": \"userone@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление нового пользователя 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 Created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"User ID is returned\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.be.a('number');\r",
+									"    pm.environment.set(\"userId2\", jsonData.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"User Two\",\r\n  \"email\": \"usertwo@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление нового пользователя 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 Created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"User ID is returned\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.be.a('number');\r",
+									"    pm.environment.set(\"userId3\", jsonData.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"User Three\",\r\n  \"email\": \"userthree@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление нового пользователя 4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 Created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"User ID is returned\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.be.a('number');\r",
+									"    pm.environment.set(\"userId4\", jsonData.id);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"User Four\",\r\n  \"email\": \"userfour@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Add events for user 1",
+			"item": [
+				{
+					"name": "add categorie",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 Created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Response should be in JSON format\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Category should contain fields: id, name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    pm.environment.set(\"categoryId\", jsonData.id);\r",
+									"});\r",
+									"pm.test(\"Data in the response should match the request\", function () {\r",
+									"    var requestData = JSON.parse(pm.request.body.raw);\r",
+									"    var responseData = pm.response.json();\r",
+									"    pm.expect(responseData.name).to.equal(requestData.name);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"testcategories\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add event 1 user 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 Created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be in JSON format\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data in the response should match the request\", function () {\r",
+									"    var requestData = JSON.parse(pm.request.body.raw);\r",
+									"    var responseData = pm.response.json();\r",
+									"    pm.expect(responseData.title).to.equal(requestData.title);\r",
+									"    pm.expect(responseData.description).to.equal(requestData.description);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Save event id for further use\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.environment.set(\"eventId1\", jsonData.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"annotation\": \"Exercitationem. Quaerat veritatis ipsum sint iure tempora. Consequuntur voluptate commodi quidem. Maiores qui ut qui ullam at ratione.\",\r\n  \"category\": {{categoryId}},\r\n  \"description\": \"Quia expedita deserunt molestias impedit quis. Culpa et sequi et voluptatibus maxime. Accusamus molestiae in. Doloremque voluptate occaecati odit. Esse consequuntur est debitis dolorem earum. Incidunt magnam hic eos doloribus.\\n \\rEx doloribus qui est. Iste iste qui sunt deserunt sint. Non fugiat rerum.\\n \\rQuo cupiditate soluta officiis vel cumque. Perepisal iz testov main. Ratione molestias non. Tempora quas est libero laudantium explicabo porro. Nobis nemo corporis dignissimos velit quam repellendus quia deleniti delectus. Et aut minus ut magnam voluptas est aut.\",\r\n  \"eventDate\": \"2023-12-25 16:34:09\",\r\n  \"location\": {\r\n    \"lat\": -10.4107,\r\n    \"lon\": -134.3791\r\n  },\r\n  \"paid\": true,\r\n  \"participantLimit\": 547,\r\n  \"requestModeration\": true,\r\n  \"title\": \"Dolorem quidem ut voluptates nihil nesciunt non at pupupu.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/{{userId1}}/events",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userId1}}",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add event 3 user 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 Created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be in JSON format\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data in the response should match the request\", function () {\r",
+									"    var requestData = JSON.parse(pm.request.body.raw);\r",
+									"    var responseData = pm.response.json();\r",
+									"    pm.expect(responseData.title).to.equal(requestData.title);\r",
+									"    pm.expect(responseData.description).to.equal(requestData.description);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Save event id for further use\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.environment.set(\"eventId3\", jsonData.id);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"annotation\": \"Tretiy. Quaerat veritatis ipsum sint iure tempora. Consequuntur voluptate commodi quidem. Maiores qui ut qui ullam at ratione.\",\r\n  \"category\": {{categoryId}},\r\n  \"description\": \"Tretiy event. Culpa et sequi et voluptatibus maxime. Accusamus molestiae in. Doloremque voluptate occaecati odit. Esse consequuntur est debitis dolorem earum. Incidunt magnam hic eos doloribus.\\n \\rEx doloribus qui est. Iste iste qui sunt deserunt sint. Non fugiat rerum.\\n \\rQuo cupiditate soluta officiis vel cumque. Perepisal iz testov main. Ratione molestias non. Tempora quas est libero laudantium explicabo porro. Nobis nemo corporis dignissimos velit quam repellendus quia deleniti delectus. Et aut minus ut magnam voluptas est aut.\",\r\n  \"eventDate\": \"2023-12-28 16:34:09\",\r\n  \"location\": {\r\n    \"lat\": -10.4107,\r\n    \"lon\": -134.3791\r\n  },\r\n  \"paid\": true,\r\n  \"participantLimit\": 505,\r\n  \"requestModeration\": true,\r\n  \"title\": \"Dolorem quidem ut voluptates nihil nesciunt non at kukuku.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/{{userId1}}/events",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userId1}}",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add event 2 user 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 Created\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be in JSON format\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data in the response should match the request\", function () {\r",
+									"    var requestData = JSON.parse(pm.request.body.raw);\r",
+									"    var responseData = pm.response.json();\r",
+									"    pm.expect(responseData.title).to.equal(requestData.title);\r",
+									"    pm.expect(responseData.description).to.equal(requestData.description);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Save event id for further use\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.environment.set(\"eventId2\", jsonData.id);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"annotation\": \"Vtoroy ivent. Quaerat veritatis ipsum sint iure tempora. Consequuntur voluptate commodi quidem. Maiores qui ut qui ullam at ratione.\",\r\n  \"category\": {{categoryId}},\r\n  \"description\": \"Vtoroe opisanie. Culpa et sequi et voluptatibus maxime. Accusamus molestiae in. Doloremque voluptate occaecati odit. Esse consequuntur est debitis dolorem earum. Incidunt magnam hic eos doloribus.\\n \\rEx doloribus qui est. Iste iste qui sunt deserunt sint. Non fugiat rerum.\\n \\rQuo cupiditate soluta officiis vel cumque. Perepisal iz testov main. Ratione molestias non. Tempora quas est libero laudantium explicabo porro. Nobis nemo corporis dignissimos velit quam repellendus quia deleniti delectus. Et aut minus ut magnam voluptas est aut.\",\r\n  \"eventDate\": \"2023-12-26 16:34:09\",\r\n  \"location\": {\r\n    \"lat\": -10.4107,\r\n    \"lon\": -134.3791\r\n  },\r\n  \"paid\": true,\r\n  \"participantLimit\": 542,\r\n  \"requestModeration\": true,\r\n  \"title\": \"Dolorem quidem ut voluptates nihil nesciunt non at tututu.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/{{userId1}}/events",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userId1}}",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Publication event 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be in JSON format\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should have all necessary fields\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData).to.have.property('state');\r",
+									"    pm.expect(jsonData.state).to.equal('PUBLISHED');\r",
+									"});\r",
+									"pm.test(\"Updated data should match the request\", function () {\r",
+									"    var requestData = JSON.parse(pm.request.body.raw);\r",
+									"    var responseData = pm.response.json();\r",
+									"    pm.expect(responseData.state).to.equal('PUBLISHED');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"stateAction\":\"PUBLISH_EVENT\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/events/{{eventId1}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"events",
+								"{{eventId1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Publication event 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be in JSON format\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should have all necessary fields\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData).to.have.property('state');\r",
+									"    pm.expect(jsonData.state).to.equal('PUBLISHED');\r",
+									"});\r",
+									"pm.test(\"Updated data should match the request\", function () {\r",
+									"    var requestData = JSON.parse(pm.request.body.raw);\r",
+									"    var responseData = pm.response.json();\r",
+									"    pm.expect(responseData.state).to.equal('PUBLISHED');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"stateAction\":\"PUBLISH_EVENT\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/events/{{eventId2}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"events",
+								"{{eventId2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Publication event 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be in JSON format\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should have all necessary fields\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData).to.have.property('state');\r",
+									"    pm.expect(jsonData.state).to.equal('PUBLISHED');\r",
+									"});\r",
+									"pm.test(\"Updated data should match the request\", function () {\r",
+									"    var requestData = JSON.parse(pm.request.body.raw);\r",
+									"    var responseData = pm.response.json();\r",
+									"    pm.expect(responseData.state).to.equal('PUBLISHED');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"stateAction\":\"PUBLISH_EVENT\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/events/{{eventId3}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"events",
+								"{{eventId3}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Subscribe",
+			"item": [
+				{
+					"name": "Not allow subscribe userId1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response body is correct\", function () {\r",
+									"    var responseBody = pm.response.text();\r",
+									"    pm.expect(responseBody).to.include(\"Статус подписок успешно изменен\");\r",
+									"    pm.expect(responseBody).to.include(\"запрещена\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/users/{{userId1}}/allow-subscriptions?allow=false",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"users",
+								"{{userId1}}",
+								"allow-subscriptions"
+							],
+							"query": [
+								{
+									"key": "allow",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "userId 2 subscribe not allow userId1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403 Forbidden\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});\r",
+									"pm.test(\"Response body contains correct error message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"User does not allow subscriptions\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{userId2}}/subscriptions?subscribedToId={{userId1}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userId2}}",
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "subscribedToId",
+									"value": "{{userId1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Allow subscribe userId1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response body is correct\", function () {\r",
+									"    var responseBody = pm.response.text();\r",
+									"    pm.expect(responseBody).to.include(\"Статус подписок успешно изменен\");\r",
+									"    pm.expect(responseBody).to.include(\"разрешена\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/users/{{userId1}}/allow-subscriptions?allow=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"users",
+								"{{userId1}}",
+								"allow-subscriptions"
+							],
+							"query": [
+								{
+									"key": "allow",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserId2 subscribe to userId1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var userId2 = pm.environment.get(\"userId2\");\r",
+									"    var userId1 = pm.environment.get(\"userId1\");\r",
+									"\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData).to.have.property('subscriberId', parseInt(userId2));\r",
+									"    pm.expect(jsonData).to.have.property('subscribedToId', parseInt(userId1));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{userId2}}/subscriptions?subscribedToId={{userId1}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userId2}}",
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "subscribedToId",
+									"value": "{{userId1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserId1 subscribe to userId3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response body is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var userId1 = pm.environment.get(\"userId1\");\r",
+									"    var userId3 = pm.environment.get(\"userId3\");\r",
+									"\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData).to.have.property('subscriberId', parseInt(userId1));\r",
+									"    pm.expect(jsonData).to.have.property('subscribedToId', parseInt(userId3));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{userId1}}/subscriptions?subscribedToId={{userId3}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userId1}}",
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "subscribedToId",
+									"value": "{{userId3}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserId1 subscribe to userId4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var userId1 = pm.environment.get(\"userId1\");\r",
+									"    var userId4 = pm.environment.get(\"userId4\");\r",
+									"\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData).to.have.property('subscriberId', parseInt(userId1));\r",
+									"    pm.expect(jsonData).to.have.property('subscribedToId', parseInt(userId4));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{userId1}}/subscriptions?subscribedToId={{userId4}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userId1}}",
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "subscribedToId",
+									"value": "{{userId4}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserId3 subscribe to userId1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response body is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var userId3 = pm.environment.get(\"userId3\");\r",
+									"    var userId1 = pm.environment.get(\"userId1\");\r",
+									"\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData).to.have.property('subscriberId', parseInt(userId3));\r",
+									"    pm.expect(jsonData).to.have.property('subscribedToId', parseInt(userId1));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{userId3}}/subscriptions?subscribedToId={{userId1}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userId3}}",
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "subscribedToId",
+									"value": "{{userId1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserId4 subscribe to userId1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response body is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var userId4 = pm.environment.get(\"userId4\");\r",
+									"    var userId1 = pm.environment.get(\"userId1\");\r",
+									"\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData).to.have.property('subscriberId', parseInt(userId4));\r",
+									"    pm.expect(jsonData).to.have.property('subscribedToId', parseInt(userId1));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{userId4}}/subscriptions?subscribedToId={{userId1}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userId4}}",
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "subscribedToId",
+									"value": "{{userId1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserId2 again subscribe to userId1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 Bad Request\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"pm.test(\"Response body contains correct error message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"User \" + pm.variables.get(\"userId2\") + \" is already subscribed to user \" + pm.variables.get(\"userId1\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{userId2}}/subscriptions?subscribedToId={{userId1}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userId2}}",
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "subscribedToId",
+									"value": "{{userId1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get subscrib by userId1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response contains the expected list of user names\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql([\"User Three\", \"User Four\"]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{userId1}}/subscriptions/subscribed-users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userId1}}",
+								"subscriptions",
+								"subscribed-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserId1 unsubscribed userId4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body confirms unsubscription\", function () {\r",
+									"    var responseBody = pm.response.text();\r",
+									"    pm.expect(responseBody).to.include(\"successfully unsubscribed\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{userId1}}/subscriptions?subscribedToId={{userId4}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userId1}}",
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "subscribedToId",
+									"value": "{{userId4}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get subscrib by userId1 after unsubscribe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response contains the expected list of user names\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql(['User Three']);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{userId1}}/subscriptions/subscribed-users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userId1}}",
+								"subscriptions",
+								"subscribed-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get list of subscribers userId1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response contains the expected list of subscriber names\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql([\"User Two\", \"User Three\", \"User Four\"]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{userId1}}/subscriptions/subscribers-names",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userId1}}",
+								"subscriptions",
+								"subscribers-names"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unsubscribe when not subscribed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 Not Found\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"pm.test(\"Response body contains correct error message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"Subscription not found for user \" + pm.variables.get(\"userId1\") + \" to user \" + pm.variables.get(\"userId4\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{userId1}}/subscriptions?subscribedToId={{userId4}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userId1}}",
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "subscribedToId",
+									"value": "{{userId4}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "events from userId2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response contains events\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an('array').that.is.not.empty;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{userId2}}/events/subscribed-events?from=0&size=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userId2}}",
+								"events",
+								"subscribed-events"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "events from userId1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response indicates no events available\", function () {\r",
+									"    try {\r",
+									"        var jsonData = pm.response.json();\r",
+									"        pm.expect(jsonData).to.be.an('array');\r",
+									"        pm.expect(jsonData.length).to.be.above(0);\r",
+									"    } catch (e) {\r",
+									"        var responseBody = pm.response.text();\r",
+									"        pm.expect(responseBody).to.include(\"К сожалению, пользователи на которых Вы подписаны, на данный момент не имеют опубликованных актуальных событий\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/{{userId1}}/events/subscribed-events?from=0&size=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userId1}}",
+								"events",
+								"subscribed-events"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "userId1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userId2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userId3",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userId4",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "categoryId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "eventId1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "eventId2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "eventId3",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

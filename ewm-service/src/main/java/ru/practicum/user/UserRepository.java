@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByIdInOrderByIdAsc(List<Long> ids, PageRequest pageRequest);
+
+    List<User> findByIdIn(List<Long> ids);
 }

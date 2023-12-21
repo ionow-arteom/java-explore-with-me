@@ -16,6 +16,7 @@ public class UserMapper {
                 .id(user.getId())
                 .email(user.getEmail())
                 .name(user.getName())
+                .allowSubscriptions(user.isAllowSubscriptions())
                 .build();
     }
 
@@ -27,11 +28,13 @@ public class UserMapper {
     }
 
     public User toUser(UserDto userDto) {
-        return User.builder()
+        User user = User.builder()
                 .id(userDto.getId())
                 .email(userDto.getEmail())
                 .name(userDto.getName())
+                .allowSubscriptions(userDto.isAllowSubscriptions())
                 .build();
+        return user;
     }
 
     public List<UserDto> toUserDtoList(Iterable<User> users) {

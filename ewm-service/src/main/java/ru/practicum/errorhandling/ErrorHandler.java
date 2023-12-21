@@ -75,9 +75,41 @@ public class ErrorHandler {
     }
 
     /**
-     * Logs the error message and stack trace.
-     * @param e Exception to be logged.
+     * Handles exceptions of type AlreadySubscribedException.
+     * @param e Exception to be handled.
+     * @return ErrorResponse containing the error message.
      */
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleAlreadySubscribedException(final AlreadySubscribedException e) {
+        logError(e);
+        return new ErrorResponse(e.getMessage());
+    }
+
+    /**
+     * Handles exceptions of type SubscriptionNotFoundException.
+     * @param e Exception to be handled.
+     * @return ErrorResponse containing the error message.
+     */
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleSubscriptionNotFoundException(final SubscriptionNotFoundException e) {
+        logError(e);
+        return new ErrorResponse(e.getMessage());
+    }
+
+    /**
+     * Handles exceptions of type SubscriptionNotAllowedException.
+     * @param e Exception to be handled.
+     * @return ErrorResponse containing the error message.
+     */
+    @ExceptionHandler(SubscriptionNotAllowedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleSubscriptionNotAllowedException(final SubscriptionNotAllowedException e) {
+        logError(e);
+        return new ErrorResponse(e.getMessage());
+    }
+
     private void logError(Exception e) {
         LOGGER.error("Error occurred: {}", e.getMessage(), e);
     }
