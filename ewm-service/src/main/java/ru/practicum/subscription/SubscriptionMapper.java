@@ -1,9 +1,9 @@
 package ru.practicum.subscription;
 
-import org.springframework.stereotype.Component;
+import lombok.experimental.UtilityClass;
 import ru.practicum.subscription.dto.SubscriptionDto;
 
-@Component
+@UtilityClass
 public class SubscriptionMapper {
 
     public static SubscriptionDto toDto(Subscription subscription) {

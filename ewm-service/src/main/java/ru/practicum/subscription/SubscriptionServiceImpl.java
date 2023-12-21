@@ -3,6 +3,7 @@ package ru.practicum.subscription;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.errorhandling.AlreadySubscribedException;
 import ru.practicum.errorhandling.NotFoundException;
 import ru.practicum.errorhandling.SubscriptionNotAllowedException;
@@ -22,6 +23,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public SubscriptionDto subscribe(Long subscriberId, Long subscribedToId) {
         User subscribedTo = userRepository.findById(subscribedToId)
                 .orElseThrow(() -> new NotFoundException(User.class, "User id " + subscribedToId + " not found."));
@@ -39,6 +41,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
+    @Transactional
     public String unsubscribe(Long subscriberId, Long subscribedToId) {
         if (!subscriptionRepository.existsBySubscriberIdAndSubscribedToId(subscriberId, subscribedToId)) {
             throw new SubscriptionNotFoundException("Subscription not found for user " + subscriberId + " to user " + subscribedToId);
